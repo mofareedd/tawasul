@@ -143,7 +143,7 @@ importers:
         version: 7.1.0
       ws:
         specifier: ^8.18.0
-        version: 8.18.0(bufferutil@4.0.8)
+        version: 8.18.0(bufferutil@4.0.9)
     devDependencies:
       '@sandoq/typescript-config':
         specifier: workspace:*
@@ -155,8 +155,8 @@ importers:
         specifier: ^8.5.13
         version: 8.5.13
       bufferutil:
-        specifier: ^4.0.8
-        version: 4.0.8
+        specifier: ^4.0.9
+        version: 4.0.9
       prisma:
         specifier: 6.0.1
         version: 6.0.1
@@ -1218,8 +1218,8 @@ packages:
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
 
-  bufferutil@4.0.8:
-    resolution: {integrity: sha512-4T53u4PdgsXqKaIctwF8ifXlRTTmEPJ8iEPWFdGZvcf7sbwYo6FKFEX9eNNAnzFZ7EzJAQ3CJeOtCRA4rDp7Pw==}
+  bufferutil@4.0.9:
+    resolution: {integrity: sha512-WDtdLmJvAuNNPzByAYpRo2rF1Mmradw6gvWsQKf63476DDXmomT9zUiGypLcG4ibIM67vhAj8jJRdbmEws2Aqw==}
     engines: {node: '>=6.14.2'}
 
   bundle-require@5.1.0:
@@ -4302,7 +4302,7 @@ snapshots:
       base64-js: 1.5.1
       ieee754: 1.2.1
 
-  bufferutil@4.0.8:
+  bufferutil@4.0.9:
     dependencies:
       node-gyp-build: 4.8.2
 
@@ -6512,9 +6512,9 @@ snapshots:
 
   wrappy@1.0.2: {}
 
-  ws@8.18.0(bufferutil@4.0.8):
+  ws@8.18.0(bufferutil@4.0.9):
     optionalDependencies:
-      bufferutil: 4.0.8
+      bufferutil: 4.0.9
 
   y18n@4.0.3: {}
 
