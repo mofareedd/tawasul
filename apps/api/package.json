@@ -1,0 +1,36 @@
+{
+  "name": "api",
+  "version": "0.0.0",
+  "description": "Sandoq API",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development tsx watch src/app.ts",
+    "dev:prod": "NODE_ENV=production tsx watch src/app.ts",
+    "build": "tsup src/app.ts --clean --onSuccess 'cp package.json dist/'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "6.0.1",
+    "@sandoq/db": "workspace:*",
+    "@sandoq/contract": "workspace:*",
+    "@ts-rest/express": "^3.51.0",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.13",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0"
+  },
+  "devDependencies": {
+    "@sandoq/typescript-config": "workspace:*",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "tsup": "^8.3.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

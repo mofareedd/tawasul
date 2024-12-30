@@ -76,27 +76,33 @@ model Verification {
   @@map("verification")
 }
 
-model Folder {
-  id        String    @id @default(uuid())
-  title     String    @default("Untitled")
-  userId    String
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
+enum Visibility {
+  PUBLIC
+  PRIVATE
+}
 
-  User User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  File File[]
+model Folder {
+  id         String     @id @default(uuid())
+  title      String     @default("Untitled")
+  userId     String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  visibility Visibility @default(PUBLIC)
+  User       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  File       File[]
 
   @@index([userId])
 }
 
 model File {
-  id        String    @id @default(uuid())
-  title     String    @default("Untitled")
-  url       String
-  fileType  String
-  size      Int
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
+  id         String     @id @default(uuid())
+  title      String     @default("Untitled")
+  url        String
+  fileType   String
+  size       Int
+  visibility Visibility @default(PUBLIC)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 
   folderId String
   Folder   Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
