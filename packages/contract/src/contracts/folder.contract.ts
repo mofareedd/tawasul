@@ -41,6 +41,7 @@ export const folderContract = c.router(
     getById: {
       method: 'GET',
       path: '/folders/:id',
+
       pathParams: z.object({ id: z.coerce.string() }),
       responses: {
         200: folderSchema,

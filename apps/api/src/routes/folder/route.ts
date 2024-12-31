@@ -9,7 +9,8 @@ import {
 } from './service';
 
 const s = initServer();
-export const folderRoute = s.router(contract.folders, {
+
+export const folderRouter = s.router(contract.folders, {
   getAll: {
     handler: async () => {
       const folders = await getAllFolders('');

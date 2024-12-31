@@ -72,12 +72,13 @@ export const fileContract = c.router(
       },
       summary: 'Update file by id',
     },
-    delete: {
+    remove: {
       method: 'DELETE',
       path: '/files/:id',
+      body: z.object({}),
       pathParams: z.object({ id: z.coerce.string() }),
       responses: {
-        204: z.object({}),
+        200: z.object({ message: z.string() }),
         404: z.object({ message: z.string() }),
       },
       summary: 'Delete file by id',
