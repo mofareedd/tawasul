@@ -13,5 +13,12 @@
       "apps/docs/**/*.json",
       "apps/email/.react-email/**"
     ]
+  },
+  "linter": {
+    "rules": {
+      "suspicious": {
+        "noConsole": "off"
+      }
+    }
   }
 }

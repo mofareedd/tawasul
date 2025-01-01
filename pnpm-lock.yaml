@@ -45,6 +45,9 @@ importers:
       '@prisma/client':
         specifier: 6.0.1
         version: 6.0.1(prisma@6.0.1)
+      '@sandoq/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
       '@sandoq/contract':
         specifier: workspace:*
         version: link:../../packages/contract

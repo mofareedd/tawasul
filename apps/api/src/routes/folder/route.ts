@@ -1,3 +1,4 @@
+import { getSession } from '@/lib/auth';
 import { contract } from '@sandoq/contract';
 import { initServer } from '@ts-rest/express';
 import {
@@ -12,7 +13,9 @@ const s = initServer();
 
 export const folderRouter = s.router(contract.folders, {
   getAll: {
-    handler: async () => {
+    handler: async ({ headers }) => {
+      const session = await getSession(headers);
+      console.log(session);
       const folders = await getAllFolders('');
       return { body: folders, status: 200 };
     },
