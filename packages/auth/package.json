@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "better-auth": "^1.1.4",
+    "better-auth": "^1.1.8",
     "@sandoq/db": "workspace:*"
   },
   "devDependencies": {
