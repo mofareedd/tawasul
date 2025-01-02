@@ -13,10 +13,15 @@ const s = initServer();
 
 export const folderRouter = s.router(contract.folders, {
   getAll: {
-    handler: async ({ headers }) => {
+    handler: async ({ headers, query }) => {
+      const { take, skip } = query;
       const session = await getSession(headers);
-      console.log(session);
-      const folders = await getAllFolders('');
+
+      const folders = await getAllFolders({
+        userId: session?.user.id ?? '',
+        skip,
+        take,
+      });
       return { body: folders, status: 200 };
     },
   },
@@ -33,6 +38,12 @@ export const folderRouter = s.router(contract.folders, {
     },
   },
   getById: {
+    middleware: [
+      (req, res, next) => {
+        const { id } = req.params;
+        next();
+      },
+    ],
     handler: async ({ params }) => {
       const { id } = params;
       const folder = await getFolderById({ folderId: id, userId: '' });

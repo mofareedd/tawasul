@@ -1,4 +1,5 @@
 import { initContract } from '@ts-rest/core';
+import { zContractErrorResponse, zContractMessageResponse } from '../constant';
 
 const c = initContract();
 
@@ -21,6 +22,10 @@ export const folderContract = c.router(
       responses: {
         200: z.array(folderSchema),
       },
+      query: z.object({
+        skip: z.coerce.number().default(0),
+        take: z.coerce.number().default(10),
+      }),
       summary: 'Get all the folders',
     },
     create: {
@@ -34,18 +39,17 @@ export const folderContract = c.router(
       }),
       responses: {
         201: folderSchema,
-        404: z.object({ message: z.string() }),
+        404: zContractErrorResponse,
       },
       summary: 'Create folder',
     },
     getById: {
       method: 'GET',
       path: '/folders/:id',
-
       pathParams: z.object({ id: z.coerce.string() }),
       responses: {
         200: folderSchema,
-        404: z.object({ message: z.string() }),
+        404: zContractMessageResponse,
       },
       summary: 'Get folder by id',
     },
@@ -63,7 +67,7 @@ export const folderContract = c.router(
         .partial(),
       responses: {
         201: folderSchema,
-        404: z.object({ message: z.string() }),
+        404: zContractMessageResponse,
       },
       summary: 'Update folder by id',
     },
@@ -73,8 +77,8 @@ export const folderContract = c.router(
       body: z.object({}),
       pathParams: z.object({ id: z.coerce.string() }),
       responses: {
-        200: z.object({ message: z.string() }),
-        404: z.object({ message: z.string() }),
+        200: zContractMessageResponse,
+        404: zContractMessageResponse,
       },
       summary: 'Delete folder by id',
     },

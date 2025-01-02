@@ -1,13 +1,23 @@
-import type { ServerInferRequest, contract } from '@sandoq/contract';
+import {
+  type ServerInferRequest,
+  TsRestResponseError,
+  contract,
+} from '@sandoq/contract';
 import { db } from '@sandoq/db';
 
 type FolderInput = ServerInferRequest<typeof contract.folders>;
 
-export async function getAllFolders(userId: string) {
+export async function getAllFolders({
+  userId,
+  skip,
+  take,
+}: { take: number; skip: number; userId: string }) {
   return await db.folder.findMany({
     where: {
       userId: userId,
     },
+    skip,
+    take,
   });
 }
 export async function createFolder(
@@ -21,7 +31,13 @@ export async function createFolder(
 
   //   Throw an error if user not found
   if (!user) {
-    throw new Error('a');
+    throw new TsRestResponseError(contract.folders.create, {
+      status: 404,
+      body: {
+        message: 'Unauthorized',
+        status: 404,
+      },
+    });
   }
 
   // Create new folder and return it
