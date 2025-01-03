@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "tailwind.config.ts",
+    "css": "src/styles/globals.css",
+    "baseColor": "zinc",
+    "cssVariables": true
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "components": "@sandoq/ui/components",
+    "utils": "@sandoq/ui/lib/utils",
+    "hooks": "@sandoq/ui/hooks",
+    "lib": "@sandoq/ui/lib",
+    "ui": "@sandoq/ui/components"
+  }
+}

@@ -38,12 +38,6 @@ export const folderRouter = s.router(contract.folders, {
     },
   },
   getById: {
-    middleware: [
-      (req, res, next) => {
-        const { id } = req.params;
-        next();
-      },
-    ],
     handler: async ({ params }) => {
       const { id } = params;
       const folder = await getFolderById({ folderId: id, userId: '' });
