@@ -15,7 +15,7 @@
     "@prisma/adapter-neon": "^6.0.1",
     "@prisma/client": "6.0.1",
     "server-only": "^0.0.1",
-    "undici": "^7.1.0",
+    "undici": "^7.2.0",
     "ws": "^8.18.0"
   },
   "devDependencies": {
