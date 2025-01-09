@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@prisma/client": "6.0.1",
+    "@prisma/client": "6.2.1",
     "@sandoq/auth": "workspace:*",
     "@sandoq/ui": "workspace:*",
     "better-auth": "^1.1.4",

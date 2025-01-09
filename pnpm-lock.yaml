@@ -43,8 +43,8 @@ importers:
   apps/api:
     dependencies:
       '@prisma/client':
-        specifier: 6.0.1
-        version: 6.0.1(prisma@6.0.1)
+        specifier: 6.2.1
+        version: 6.2.1(prisma@6.0.1)
       '@sandoq/auth':
         specifier: workspace:*
         version: link:../../packages/auth
@@ -113,8 +113,8 @@ importers:
   apps/client:
     dependencies:
       '@prisma/client':
-        specifier: 6.0.1
-        version: 6.0.1(prisma@6.0.1)
+        specifier: 6.2.1
+        version: 6.2.1(prisma@6.0.1)
       '@sandoq/auth':
         specifier: workspace:*
         version: link:../../packages/auth
@@ -213,8 +213,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1(@neondatabase/serverless@0.10.4)
       '@prisma/client':
-        specifier: 6.0.1
-        version: 6.0.1(prisma@6.0.1)
+        specifier: 6.2.1
+        version: 6.2.1(prisma@6.0.1)
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
@@ -1022,8 +1022,8 @@ packages:
     peerDependencies:
       '@neondatabase/serverless': ^0.6.0 || ^0.7.0 || ^0.8.0 || ^0.9.0 || ^0.10.0
 
-  '@prisma/client@6.0.1':
-    resolution: {integrity: sha512-60w7kL6bUxz7M6Gs/V+OWMhwy94FshpngVmOY05TmGD0Lhk+Ac0ZgtjlL6Wll9TD4G03t4Sq1wZekNVy+Xdlbg==}
+  '@prisma/client@6.2.1':
+    resolution: {integrity: sha512-msKY2iRLISN8t5X0Tj7hU0UWet1u0KuxSPHWuf3IRkB4J95mCvGpyQBfQ6ufcmvKNOMQSq90O2iUmJEN2e5fiA==}
     engines: {node: '>=18.18'}
     peerDependencies:
       prisma: '*'
@@ -4663,7 +4663,7 @@ snapshots:
       '@prisma/driver-adapter-utils': 6.0.1
       postgres-array: 3.0.2
 
-  '@prisma/client@6.0.1(prisma@6.0.1)':
+  '@prisma/client@6.2.1(prisma@6.0.1)':
     optionalDependencies:
       prisma: 6.0.1
 
