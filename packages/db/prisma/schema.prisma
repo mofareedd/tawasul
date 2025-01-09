@@ -13,7 +13,7 @@ datasource db {
 }
 
 model User {
-  id            String    @id
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name          String
   email         String
   emailVerified Boolean
@@ -22,15 +22,14 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
-  folders       Folder[]
-  File          File[]
+  Post          Post[]
 
   @@unique([email])
   @@map("user")
 }
 
 model Session {
-  id        String   @id
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   expiresAt DateTime
   token     String
   createdAt DateTime @default(now())
@@ -46,7 +45,7 @@ model Session {
 }
 
 model Account {
-  id                    String    @id
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   accountId             String
   providerId            String
   userId                String
@@ -65,51 +64,46 @@ model Account {
   @@map("account")
 }
 
-model Verification {
-  id         String    @id
-  identifier String
-  value      String
-  expiresAt  DateTime
-  createdAt  DateTime? @default(now())
-  updatedAt  DateTime? @updatedAt
-
-  @@map("verification")
-}
-
-enum Visibility {
-  PUBLIC
-  PRIVATE
-}
-
-model Folder {
-  id         String     @id @default(uuid())
-  title      String     @default("Untitled")
-  userId     String
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  visibility Visibility @default(PUBLIC)
-  User       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  File       File[]
+model Post {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  media     Media[]
 
   @@index([userId])
+  @@map("posts")
 }
 
-model File {
-  id         String     @id @default(uuid())
-  title      String     @default("Untitled")
-  url        String
-  fileType   String
-  size       Int
-  visibility Visibility @default(PUBLIC)
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+model Media {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  url       String
+  type      MediaType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  postId    String?
+  post      Post?     @relation(fields: [postId], references: [id])
 
-  folderId String
-  Folder   Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
-
-  userId String
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([folderId])
-  @@index([userId])
+  @@index([postId])
+  @@map("post_media")
 }
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+// model Comment {
+//   id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+//   content   String
+//   reply     Comment[] @relation("reply")
+//   commentId String?   @db.Uuid
+//   Comment   Comment?  @relation("reply", fields: [commentId], references: [id])
+//   userId    String?   @db.Uuid
+//   User      User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   createdAt DateTime  @default(now())
+//   Post      Post?     @relation(fields: [postId], references: [id])
+//   postId    String?
+// }

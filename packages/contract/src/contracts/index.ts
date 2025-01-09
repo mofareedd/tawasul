@@ -1,11 +1,11 @@
 import { initContract } from '@ts-rest/core';
-import { folderContract } from './folder.contract';
+import { postContract } from './post.contract';
 
 const c = initContract();
 
 export const contract = c.router(
   {
-    folders: folderContract,
+    posts: postContract,
   },
   {
     pathPrefix: '/api/v1',
