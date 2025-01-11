@@ -2,7 +2,6 @@ import { Geist, Geist_Mono } from 'next/font/google';
 
 import '@sandoq/ui/globals.css';
 import { Providers } from '@/components/providers';
-import { ThemeToggle } from '@/components/theme-toggle';
 import type { ReactNode } from 'react';
 
 const fontSans = Geist({
@@ -25,10 +24,7 @@ export default function RootLayout({
       <body
         className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}
       >
-        <Providers>
-          <ThemeToggle />
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
