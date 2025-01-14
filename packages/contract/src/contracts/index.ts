@@ -11,3 +11,5 @@ export const contract = c.router(
     pathPrefix: '/api/v1',
   }
 );
+
+export { createExpressEndpoints, initServer } from '@ts-rest/express';

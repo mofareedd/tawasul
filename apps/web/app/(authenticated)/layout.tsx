@@ -10,9 +10,10 @@ export default async function AppLayout({
 }>) {
   const session = await currentUser();
 
-  if (!session) {
+  if (!session || !session?.user.emailVerified) {
     redirect('/auth/sign-in');
   }
+
   return (
     <main>
       <ThemeToggle />

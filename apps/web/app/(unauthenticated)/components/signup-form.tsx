@@ -2,7 +2,7 @@
 
 import { IconSpinner } from '@/components/icons';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signUp } from '@sandoq/auth';
+import { emailOtp, signUp } from '@sandoq/auth';
 import { Button } from '@sandoq/ui/components/button';
 import {
   Form,
@@ -39,18 +39,29 @@ export function SignupForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     startTransition(async () => {
-      await signUp.email(
+      const { error } = await signUp.email({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      });
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      await emailOtp.sendVerificationOtp(
         {
-          name: values.name,
           email: values.email,
-          password: values.password,
+          type: 'email-verification',
         },
         {
           onSuccess: () => {
-            toast.success('signed-up');
-            router.push('/');
+            toast.success(
+              'Signed up successfully! Please check your email to verify your account'
+            );
+            router.push('/auth/verify');
           },
         }
       );

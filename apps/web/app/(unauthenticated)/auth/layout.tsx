@@ -10,12 +10,16 @@ export default async function AuthLayout({
 }>) {
   const session = await currentUser();
 
-  if (session) {
+  if (session && session.user.emailVerified!) {
     redirect('/');
   }
   return (
     <main className="flex min-h-screen w-full">
-      {children}
+      <section className="flex-1 px-10 py-6">
+        <h3 className="font-bold text-2xl">Sandoq.</h3>
+        {children}
+      </section>
+      {/* <ThemeToggle /> */}
       <AuthBackground />
     </main>
   );

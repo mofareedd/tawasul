@@ -1,5 +1,5 @@
 {
-  "extends": "@sandoq/typescript-config/base.json",
+  "extends": "@sandoq/typescript-config/nextjs.json",
   "compilerOptions": {
     "outDir": "dist",
     "baseUrl": ".",

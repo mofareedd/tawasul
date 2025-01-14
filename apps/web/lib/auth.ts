@@ -6,3 +6,10 @@ export async function currentUser() {
     headers: await headers(),
   });
 }
+export async function logOut() {
+  return await auth.api.signOut({
+    headers: await headers(),
+  });
+}
+
+export type Session = typeof auth.$Infer.Session;

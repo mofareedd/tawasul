@@ -1,5 +1,6 @@
 'use client';
 
+import { QueryProvider } from '@sandoq/query/provider';
 import { Toaster } from '@sandoq/ui/components/sonner';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import type { ReactNode } from 'react';
@@ -13,8 +14,10 @@ export function Providers({ children }: { children: ReactNode }) {
       disableTransitionOnChange
       enableColorScheme
     >
-      <Toaster />
-      {children}
+      <QueryProvider>
+        <Toaster />
+        {children}
+      </QueryProvider>
     </NextThemesProvider>
   );
 }
