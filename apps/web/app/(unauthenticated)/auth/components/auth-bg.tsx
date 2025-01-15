@@ -1,19 +1,18 @@
 'use client';
 import { Quote } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 
 export function AuthBackground() {
   return (
     <section className="relative hidden flex-1 lg:flex">
-      <div className="relative z-10 flex w-full items-start justify-end bg-none px-10 py-4">
+      {/* <div className="relative z-10 flex w-full items-start justify-end bg-none px-10 py-4">
         <Link
-          href={''}
+          href={'/auth/sign-in'}
           className="rounded-full border border-white px-6 py-1 font-bold text-md text-white hover:bg-accent"
         >
           Sign-in
         </Link>
-      </div>
+      </div> */}
       <Image
         src="/auth-bg.png"
         alt="Picture of the author"

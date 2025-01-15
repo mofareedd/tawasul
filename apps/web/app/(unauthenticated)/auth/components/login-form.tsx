@@ -1,8 +1,8 @@
 'use client';
 
 import { IconSpinner } from '@/components/icons';
+import { useOtp, useSignIn } from '@/hooks/useAuth';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from '@sandoq/auth';
 import { Button } from '@sandoq/ui/components/button';
 import {
   Form,
@@ -13,7 +13,6 @@ import {
 import { Input } from '@sandoq/ui/components/input';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -24,7 +23,9 @@ const formSchema = z.object({
 });
 
 export function LoginForm() {
-  const [isPending, startTransition] = useTransition();
+  const { isPending, mutate } = useSignIn();
+  const { mutate: mutateOtp } = useOtp();
+
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -34,26 +35,42 @@ export function LoginForm() {
     },
   });
 
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    startTransition(async () => {
-      const { error } = await signIn.email(
-        {
-          email: values.email,
-          password: values.password,
-        },
-        {
-          onSuccess: () => {
+    mutate(
+      { email: values.email, password: values.password },
+      {
+        onSuccess: (res) => {
+          const { data, error } = res;
+
+          if (error) {
+            return toast.error(error.message);
+          }
+
+          if (data.user.emailVerified) {
             toast.success('logged In');
             router.push('/');
-          },
-        }
-      );
-
-      if (error) {
-        toast.error(error.message);
+          } else {
+            mutateOtp(
+              { email: values.email, type: 'email-verification' },
+              {
+                onSuccess: ({ error }) => {
+                  if (error) {
+                    return toast.error(error.message);
+                  }
+                  toast.success(
+                    'Logged in successfully! Please check your email to verify your account'
+                  );
+                  router.push('/auth/verify');
+                },
+              }
+            );
+          }
+        },
+        onError: (e) => {
+          toast.error(e.message);
+        },
       }
-    });
+    );
   }
 
   return (
@@ -91,7 +108,7 @@ export function LoginForm() {
           )}
         />
         <div className="flex justify-end font-medium">
-          <Link href={''} className="text-primary text-xs">
+          <Link href="/auth/forgot-password" className="text-primary text-xs">
             Forgot password?
           </Link>
         </div>

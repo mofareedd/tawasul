@@ -9,7 +9,7 @@ export default async function App() {
       <div className="flex flex-col items-center justify-center gap-4">
         <h1 className="font-bold text-2xl">Hello World</h1>
         <p>{session?.user.emailVerified ? 'Verified' : 'Not Verified'}</p>
-        <Button size="sm">Home Page</Button>
+        <Button className="">Home Page</Button>
         <SiteHeader />
       </div>
     </div>

@@ -1,5 +1,5 @@
-import { SignupForm } from '../../components/signup-form';
-import SocialAuth from '../../components/social-auth';
+import { SignupForm } from '../components/signup-form';
+import SocialAuth from '../components/social-auth';
 
 export default function SignUp() {
   return (
