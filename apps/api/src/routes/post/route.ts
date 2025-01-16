@@ -1,7 +1,7 @@
 import { getSession } from '@/lib/auth';
-import { contract } from '@sandoq/contract';
-import { initServer } from '@ts-rest/express';
+import { contract, initServer } from '@sandoq/contract';
 import { createPost, deletePost, getPostById, getUserPosts } from './service';
+
 const s = initServer();
 
 export const postRouter = s.router(contract.posts, {
@@ -9,7 +9,6 @@ export const postRouter = s.router(contract.posts, {
     handler: async ({ headers, query }) => {
       const { take, skip } = query;
       const session = await getSession(headers);
-
       const posts = await getUserPosts({
         userId: session?.user.id ?? '',
         skip,

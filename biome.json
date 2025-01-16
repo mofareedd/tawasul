@@ -16,9 +16,18 @@
   },
   "linter": {
     "rules": {
+      "a11y": {
+        "noSvgWithoutTitle": "off",
+        "useFocusableInteractive": "off",
+        "useSemanticElements": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off"
+      },
       "suspicious": {
         "noConsole": "off",
-        "noConsoleLog": "off"
+        "noConsoleLog": "off",
+        "useAwait": "off"
       }
     }
   }

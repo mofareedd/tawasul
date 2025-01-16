@@ -1,5 +1,5 @@
 {
-  "extends": "@sandoq/typescript-config/react-library.json",
+  "extends": "@sandoq/typescript-config/nextjs.json",
   "compilerOptions": {
     "baseUrl": "."
   },

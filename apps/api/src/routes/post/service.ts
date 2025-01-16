@@ -1,6 +1,7 @@
 import type { ZPosts } from '@sandoq/constants';
-import { TsRestResponseError, contract } from '@sandoq/contract';
+import { contract } from '@sandoq/contract';
 import { db } from '@sandoq/db';
+import { TsRestResponseError } from '@ts-rest/core';
 
 export async function getUserPosts({
   skip,
@@ -26,7 +27,6 @@ export async function getUserPosts({
 export async function createPost({
   input,
 }: { input: Omit<ZPosts, 'id' | 'createdAt' | 'updatedAt'> }) {
-  console.log(input);
   const user = await db.user.findFirst({
     where: {
       id: input.userId,
