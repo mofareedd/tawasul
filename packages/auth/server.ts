@@ -5,7 +5,6 @@ import { resend } from '@sandoq/resend';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { nextCookies } from 'better-auth/next-js';
-import { emailOTP } from 'better-auth/plugins';
 import {
   getForgetPasswordTemplate,
   getVerifyEmailTemplate,
@@ -16,6 +15,8 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    autoSignIn: false,
+    requireEmailVerification: true,
     sendResetPassword: async ({ user, url }) => {
       await resend.emails.send({
         from: 'Acme <onboarding@resend.dev>',
@@ -23,30 +24,22 @@ export const auth = betterAuth({
         ...getForgetPasswordTemplate({ link: url, name: user.name }),
       });
     },
-
-    socialProviders: {
-      google: {
-        clientId: process.env.GOOGLE_CLIENT_ID!,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      },
-    },
-    plugins: [
-      emailOTP({
-        async sendVerificationOTP({ email, otp, type }) {
-          console.log('Sending an email...');
-          if (type === 'email-verification') {
-            await resend.emails.send({
-              from: 'Acme <onboarding@resend.dev>',
-              to: ['delivered@resend.dev', email],
-              ...getVerifyEmailTemplate({ name: email, otp }),
-            });
-          }
-        },
-
-        otpLength: 6,
-        expiresIn: 86400,
-      }),
-      nextCookies(),
-    ],
   },
+  emailVerification: {
+    sendVerificationEmail: async ({ url, user }) => {
+      await resend.emails.send({
+        from: 'Acme <onboarding@resend.dev>',
+        to: ['delivered@resend.dev', user.email],
+        ...getVerifyEmailTemplate({ link: url, name: user.name }),
+      });
+    },
+    sendOnSignUp: true,
+  },
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    },
+  },
+  plugins: [nextCookies()],
 });

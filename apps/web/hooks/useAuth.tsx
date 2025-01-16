@@ -1,18 +1,38 @@
-import { emailOtp, forgetPassword, resetPassword, signIn } from '@sandoq/auth';
+import { forgetPassword, resetPassword, signIn, signUp } from '@sandoq/auth';
 import { useMutation } from '@tanstack/react-query';
 
-export function useOtp() {
+// export function useOtp() {
+//   return useMutation({
+//     mutationFn: async ({
+//       email,
+//       type,
+//     }: {
+//       email: string;
+//       type: 'forget-password' | 'email-verification';
+//     }) => {
+//       return await emailOtp.sendVerificationOtp({
+//         email,
+//         type,
+//       });
+//     },
+//   });
+// }
+
+export function useSignUp() {
   return useMutation({
     mutationFn: async ({
+      name,
       email,
-      type,
+      password,
     }: {
+      name: string;
       email: string;
-      type: 'forget-password' | 'email-verification';
+      password: string;
     }) => {
-      return await emailOtp.sendVerificationOtp({
+      return await signUp.email({
+        name,
         email,
-        type,
+        password,
       });
     },
   });

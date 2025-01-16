@@ -1,8 +1,8 @@
 'use client';
 
 import { IconSpinner } from '@/components/icons';
+import { useSignUp } from '@/hooks/useAuth';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { emailOtp, signUp } from '@sandoq/auth';
 import { Button } from '@sandoq/ui/components/button';
 import {
   Form,
@@ -13,8 +13,6 @@ import {
 import { Input } from '@sandoq/ui/components/input';
 import {} from '@sandoq/ui/components/sonner';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -26,8 +24,7 @@ const formSchema = z.object({
 });
 
 export function SignupForm() {
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+  const { mutate, isPending } = useSignUp();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,32 +36,18 @@ export function SignupForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    startTransition(async () => {
-      const { error } = await signUp.email({
-        name: values.name,
-        email: values.email,
-        password: values.password,
-      });
-
-      if (error) {
-        toast.error(error.message);
-        return;
-      }
-
-      await emailOtp.sendVerificationOtp(
-        {
-          email: values.email,
-          type: 'email-verification',
-        },
-        {
-          onSuccess: () => {
-            toast.success(
-              'Signed up successfully! Please check your email to verify your account'
-            );
-            router.push('/auth/verify');
-          },
+    mutate(values, {
+      onSuccess: (res) => {
+        const { error } = res;
+        if (error) {
+          toast.error(error.message);
+          return;
         }
-      );
+
+        toast.success(
+          'Signed up successfully! Please check your email to verify your account'
+        );
+      },
     });
   }
 

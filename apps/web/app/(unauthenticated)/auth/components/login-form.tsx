@@ -1,7 +1,7 @@
 'use client';
 
 import { IconSpinner } from '@/components/icons';
-import { useOtp, useSignIn } from '@/hooks/useAuth';
+import { useSignIn } from '@/hooks/useAuth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@sandoq/ui/components/button';
 import {
@@ -24,7 +24,6 @@ const formSchema = z.object({
 
 export function LoginForm() {
   const { isPending, mutate } = useSignIn();
-  const { mutate: mutateOtp } = useOtp();
 
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -40,31 +39,14 @@ export function LoginForm() {
       { email: values.email, password: values.password },
       {
         onSuccess: (res) => {
-          const { data, error } = res;
+          const { error } = res;
 
           if (error) {
             return toast.error(error.message);
           }
 
-          if (data.user.emailVerified) {
-            toast.success('logged In');
-            router.push('/');
-          } else {
-            mutateOtp(
-              { email: values.email, type: 'email-verification' },
-              {
-                onSuccess: ({ error }) => {
-                  if (error) {
-                    return toast.error(error.message);
-                  }
-                  toast.success(
-                    'Logged in successfully! Please check your email to verify your account'
-                  );
-                  router.push('/auth/verify');
-                },
-              }
-            );
-          }
+          toast.success('logged In');
+          router.push('/');
         },
         onError: (e) => {
           toast.error(e.message);
