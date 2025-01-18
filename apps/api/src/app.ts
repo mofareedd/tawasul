@@ -2,9 +2,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-import { auth, toNodeHandler } from '@sandoq/auth';
-import { contract, createExpressEndpoints } from '@sandoq/contract';
-import { db } from '@sandoq/db';
+import { auth, toNodeHandler } from '@tawasul/auth';
+import { contract, createExpressEndpoints } from '@tawasul/contract';
+import { db } from '@tawasul/db';
 import cors from 'cors';
 import express from 'express';
 import { logger } from './lib/logger';

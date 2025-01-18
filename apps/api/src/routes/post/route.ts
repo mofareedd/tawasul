@@ -1,5 +1,5 @@
 import { getSession } from '@/lib/auth';
-import { contract, initServer } from '@sandoq/contract';
+import { contract, initServer } from '@tawasul/contract';
 import { createPost, deletePost, getPostById, getUserPosts } from './service';
 
 const s = initServer();

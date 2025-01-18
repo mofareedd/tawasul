@@ -2,14 +2,14 @@
 import { IconSpinner } from '@/components/icons';
 import { useForgotPassword } from '@/hooks/useAuth';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@sandoq/ui/components/button';
+import { Button } from '@tawasul/ui/components/button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-} from '@sandoq/ui/components/form';
-import { Input } from '@sandoq/ui/components/input';
+} from '@tawasul/ui/components/form';
+import { Input } from '@tawasul/ui/components/input';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';

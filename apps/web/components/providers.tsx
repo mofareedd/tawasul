@@ -1,7 +1,7 @@
 'use client';
 
-import { QueryProvider } from '@sandoq/query/provider';
-import { Toaster } from '@sandoq/ui/components/sonner';
+import { QueryProvider } from '@tawasul/query/provider';
+import { Toaster } from '@tawasul/ui/components/sonner';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import type { ReactNode } from 'react';
 

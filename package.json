@@ -1,5 +1,5 @@
 {
-  "name": "sandoq",
+  "name": "tawasul",
   "version": "2.21.11",
   "scripts": {
     "build": "turbo build",
@@ -15,7 +15,7 @@
     "@auto-it/all-contributors": "^11.3.0",
     "@auto-it/first-time-contributor": "^11.3.0",
     "@biomejs/biome": "1.9.4",
-    "@sandoq/typescript-config": "workspace:*",
+    "@tawasul/typescript-config": "workspace:*",
     "turbo": "^2.3.3",
     "@turbo/gen": "^2.3.3",
     "typescript": "^5.7.2",

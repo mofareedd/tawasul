@@ -16,7 +16,7 @@ export default async function AuthLayout({
   return (
     <main className="flex min-h-screen w-full">
       <section className="flex-1 px-10 py-6">
-        <h3 className="font-bold text-2xl">Sandoq.</h3>
+        <h3 className="font-bold text-2xl">tawasul.</h3>
         {children}
       </section>
       {/* <ThemeToggle /> */}

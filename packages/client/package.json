@@ -1,5 +1,5 @@
 {
-  "name": "@sandoq/client",
+  "name": "@tawasul/client",
   "version": "1.0.0",
   "description": "",
   "main": "./src/index.ts",
@@ -10,9 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "@ts-rest/react-query": "^3.51.0",
-    "@sandoq/contract": "workspace:*"
+    "@tawasul/contract": "workspace:*"
   },
   "devDependencies": {
-    "@sandoq/typescript-config": "workspace:*"
+    "@tawasul/typescript-config": "workspace:*"
   }
 }

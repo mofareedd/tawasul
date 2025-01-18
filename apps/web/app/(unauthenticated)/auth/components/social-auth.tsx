@@ -1,7 +1,7 @@
 'use client';
 import { IconGoogle } from '@/components/icons';
-import { signIn } from '@sandoq/auth';
-import { Button } from '@sandoq/ui/components/button';
+import { signIn } from '@tawasul/auth';
+import { Button } from '@tawasul/ui/components/button';
 
 export default function SocialAuth() {
   async function onSubmit() {

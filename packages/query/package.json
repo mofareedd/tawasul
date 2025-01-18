@@ -1,5 +1,5 @@
 {
-  "name": "@sandoq/query",
+  "name": "@tawasul/query",
   "version": "0.0.0",
   "description": "",
   "main": "./src/index.ts",
@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@sandoq/typescript-config": "workspace:*",
+    "@tawasul/typescript-config": "workspace:*",
     "@tanstack/react-query": "^5.64.1",
     "@types/react": "18.3.0",
     "react": "^19.0.0"

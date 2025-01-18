@@ -1,5 +1,5 @@
 {
-  "name": "@sandoq/resend",
+  "name": "@tawasul/resend",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -12,7 +12,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@sandoq/typescript-config": "workspace:*",
+    "@tawasul/typescript-config": "workspace:*",
     "@types/node": "22.10.5",
     "typescript": "^5.7.2"
   }

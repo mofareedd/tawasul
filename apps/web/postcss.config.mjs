@@ -1,1 +1,1 @@
-export { default } from '@sandoq/ui/postcss.config';
+export { default } from '@tawasul/ui/postcss.config';

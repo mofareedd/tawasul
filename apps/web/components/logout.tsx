@@ -1,9 +1,9 @@
 'use client';
 
-import { signOut } from '@sandoq/auth';
-import { Button } from '@sandoq/ui/components/button';
+import { signOut } from '@tawasul/auth';
+import { Button } from '@tawasul/ui/components/button';
 
-export default function SiteHeader() {
+export default function Logout() {
   return (
     <Button
       size="sm"

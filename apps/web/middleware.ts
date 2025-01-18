@@ -1,4 +1,4 @@
-import type { auth } from '@sandoq/auth';
+import type { auth } from '@tawasul/auth';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 

@@ -1,4 +1,4 @@
-import { auth } from '@sandoq/auth';
+import { auth } from '@tawasul/auth';
 import { headers } from 'next/headers';
 
 export async function currentUser() {

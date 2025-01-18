@@ -6,7 +6,7 @@ export default function SignIn() {
     <div className="mx-auto flex h-full max-w-md flex-col items-center justify-center space-y-12 lg:max-w-lg">
       <div className="text-center">
         <h1 className="font-bold text-8xl">Hi there!</h1>
-        <p className="text-muted-foreground">Welcome to Sandoq.</p>
+        <p className="text-muted-foreground">Welcome to tawasul.</p>
       </div>
 
       <SocialAuth />

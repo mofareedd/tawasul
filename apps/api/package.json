@@ -1,7 +1,7 @@
 {
   "name": "api",
   "version": "0.0.0",
-  "description": "Sandoq API",
+  "description": "tawasul API",
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=development tsx watch src/app.ts",
@@ -13,11 +13,11 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "6.0.1",
-    "@sandoq/auth": "workspace:*",
-    "@sandoq/constants": "workspace:*",
-    "@sandoq/contract": "workspace:^",
-    "@sandoq/db": "workspace:*",
-    "@sandoq/resend": "workspace:^",
+    "@tawasul/auth": "workspace:*",
+    "@tawasul/constants": "workspace:*",
+    "@tawasul/contract": "workspace:^",
+    "@tawasul/db": "workspace:*",
+    "@tawasul/resend": "workspace:^",
     "@t3-oss/env-core": "^0.11.1",
     "cors": "^2.8.5",
     "dayjs": "^1.11.13",
@@ -30,7 +30,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@sandoq/typescript-config": "workspace:*",
+    "@tawasul/typescript-config": "workspace:*",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",

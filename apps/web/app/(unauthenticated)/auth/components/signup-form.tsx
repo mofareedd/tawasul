@@ -3,15 +3,15 @@
 import { IconSpinner } from '@/components/icons';
 import { useSignUp } from '@/hooks/useAuth';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@sandoq/ui/components/button';
+import { Button } from '@tawasul/ui/components/button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-} from '@sandoq/ui/components/form';
-import { Input } from '@sandoq/ui/components/input';
-import {} from '@sandoq/ui/components/sonner';
+} from '@tawasul/ui/components/form';
+import { Input } from '@tawasul/ui/components/input';
+import {} from '@tawasul/ui/components/sonner';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';

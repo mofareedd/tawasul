@@ -19,9 +19,9 @@
 //     },
 //   });
 
-import { keys as auth } from '@sandoq/auth/keys';
-import { keys as db } from '@sandoq/db/keys';
-import { keys as resend } from '@sandoq/resend/keys';
+import { keys as auth } from '@tawasul/auth/keys';
+import { keys as db } from '@tawasul/db/keys';
+import { keys as resend } from '@tawasul/resend/keys';
 import { createEnv } from '@t3-oss/env-core';
 
 export const env = createEnv({

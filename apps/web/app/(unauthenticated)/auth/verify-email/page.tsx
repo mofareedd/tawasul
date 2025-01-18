@@ -1,4 +1,4 @@
-import { buttonVariants } from '@sandoq/ui/components/button';
+import { buttonVariants } from '@tawasul/ui/components/button';
 import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';

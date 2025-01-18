@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { db } from '@sandoq/db';
-import { resend } from '@sandoq/resend';
+import { db } from '@tawasul/db';
+import { resend } from '@tawasul/resend';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { nextCookies } from 'better-auth/next-js';

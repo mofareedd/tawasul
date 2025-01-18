@@ -14,7 +14,7 @@
     "components": "@/components",
     "hooks": "@/hooks",
     "lib": "@/lib",
-    "utils": "@sandoq/ui/lib/utils",
-    "ui": "@sandoq/ui/components"
+    "utils": "@tawasul/ui/lib/utils",
+    "ui": "@tawasul/ui/components"
   }
 }
