@@ -18,7 +18,7 @@ export const navLinks: INavLinks[] = [
     title: 'Feed',
     icon: LayoutGrid,
     variant: 'default',
-    href: '/feed',
+    href: '/',
   },
   {
     title: 'Friends',

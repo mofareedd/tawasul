@@ -1,18 +1,26 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import { db } from '@tawasul/db';
-import { resend } from '@tawasul/resend';
+import { resend } from '@tawasul/email';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { nextCookies } from 'better-auth/next-js';
+import { keys } from './keys';
 import {
   getForgetPasswordTemplate,
   getVerifyEmailTemplate,
 } from './template/email-templates';
+
 export const auth = betterAuth({
   database: prismaAdapter(db, {
     provider: 'postgresql',
   }),
+  socialProviders: {
+    google: {
+      clientId: keys().GOOGLE_CLIENT_ID,
+      clientSecret: keys().GOOGLE_CLIENT_SECRET,
+    },
+  },
   emailAndPassword: {
     enabled: true,
     autoSignIn: false,
@@ -35,11 +43,6 @@ export const auth = betterAuth({
     },
     sendOnSignUp: true,
   },
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    },
-  },
+
   plugins: [nextCookies()],
 });

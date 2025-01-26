@@ -54,7 +54,7 @@ export function Nav({ links }: NavProps) {
                           }),
                           'h-9 w-9',
                           link.variant === 'default' &&
-                            'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white'
+                            ' dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white'
                         )}
                       >
                         <link.icon className="h-4 w-4" />
@@ -96,8 +96,7 @@ export function Nav({ links }: NavProps) {
                       variant: isActive ? 'default' : 'ghost',
                       size: 'lg',
                     }),
-                    link.variant === 'default' &&
-                      'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
+                    link.variant === 'default',
                     'justify-start'
                   )}
                 >

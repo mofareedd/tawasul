@@ -1,6 +1,6 @@
 'use client';
 import { IconGoogle } from '@/components/icons';
-import { signIn } from '@tawasul/auth';
+import { signIn } from '@tawasul/auth/client';
 import { Button } from '@tawasul/ui/components/button';
 
 export default function SocialAuth() {

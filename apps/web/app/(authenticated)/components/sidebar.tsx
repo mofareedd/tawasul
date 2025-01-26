@@ -6,7 +6,7 @@ import { ProfileInfo } from './profile-info';
 
 export function Sidebar() {
   return (
-    <div className="flex w-20 flex-col overflow-hidden sm:w-60 sm:space-y-4 md:w-80">
+    <div className="sticky top-0 flex h-screen w-20 flex-col overflow-hidden sm:top-4 sm:w-60 sm:space-y-4 md:w-80">
       <div className="hidden sm:block">
         <ProfileInfo />
       </div>

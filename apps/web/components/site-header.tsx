@@ -5,7 +5,7 @@ import { ProfileMenu } from './profile-menu';
 import { ThemeToggle } from './theme-toggle';
 export default function SiteHeader() {
   return (
-    <div className="hidden items-center justify-between overflow-hidden bg-background p-4 shadow-sm sm:flex sm:h-14">
+    <div className="hidden items-center justify-between overflow-hidden bg-background p-4 shadow-sm sm:flex sm:h-14 dark:bg-card">
       <div className="relative h-8 w-8">
         <Image src={'/logo.png'} alt="logo" className="absolute" fill />
       </div>

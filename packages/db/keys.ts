@@ -6,7 +6,6 @@ export const keys = () =>
     server: {
       DATABASE_URL: z.string().min(1).url(),
     },
-    runtimeEnv: {
-      DATABASE_URL: process.env.DATABASE_URL,
-    },
+    experimental__runtimeEnv: process.env,
+    skipValidation: true,
   });

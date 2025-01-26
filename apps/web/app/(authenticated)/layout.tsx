@@ -16,10 +16,10 @@ export default async function AppLayout({
   }
 
   return (
-    <main className="bg-accent">
+    <main className="bg-accent dark:bg-background">
       <div className="container mx-auto">
         <SiteHeader />
-        <div className="flex h-screen overflow-hidden sm:h-[calc(100vh-56px)] sm:space-x-6 sm:py-4">
+        <div className="flex min-h-screen sm:space-x-6 sm:py-4">
           <Sidebar />
           {children}
         </div>
