@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from 'next/font/google';
 
-import '@sandoq/ui/globals.css';
+import '@tawasul/ui/globals.css';
 import { Providers } from '@/components/providers';
 import type { ReactNode } from 'react';
 

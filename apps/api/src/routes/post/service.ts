@@ -1,7 +1,6 @@
-import type { ZPosts } from '@sandoq/constants';
-import { contract } from '@sandoq/contract';
-import { db } from '@sandoq/db';
-import { TsRestResponseError } from '@ts-rest/core';
+import type { ZPosts } from '@tawasul/constants';
+import { TsRestResponseError, contract } from '@tawasul/contract';
+import { db } from '@tawasul/db';
 
 export async function getUserPosts({
   skip,

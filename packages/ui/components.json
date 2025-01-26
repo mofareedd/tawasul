@@ -11,10 +11,10 @@
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@sandoq/ui/components",
-    "utils": "@sandoq/ui/lib/utils",
-    "hooks": "@sandoq/ui/hooks",
-    "lib": "@sandoq/ui/lib",
-    "ui": "@sandoq/ui/components"
+    "components": "@tawasul/ui/components",
+    "utils": "@tawasul/ui/lib/utils",
+    "hooks": "@tawasul/ui/hooks",
+    "lib": "@tawasul/ui/lib",
+    "ui": "@tawasul/ui/components"
   }
 }

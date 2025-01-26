@@ -4,8 +4,8 @@ import {
   zPathParams,
   zPosts,
   zQueryParams,
-} from '@sandoq/constants';
-import type { Post, Prisma } from '@sandoq/db';
+} from '@tawasul/constants';
+import type { Post, Prisma } from '@tawasul/db';
 import { initContract } from '@ts-rest/core';
 import z from 'zod';
 const c = initContract();

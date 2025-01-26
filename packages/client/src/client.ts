@@ -1,4 +1,4 @@
-import { contract } from '@sandoq/contract';
+import { contract } from '@tawasul/contract';
 // client.ts
 import { initQueryClient } from '@ts-rest/react-query';
 

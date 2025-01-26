@@ -1,16 +1,19 @@
-import { currentUser } from '@/lib/auth';
-import { Button } from '@sandoq/ui/components/button';
-import SiteHeader from './components/site-header';
+import { Card, CardContent } from '@tawasul/ui/components/card';
+import { CreatePost } from './components/create-post';
+import { ForYou } from './components/for-you';
 
-export default async function App() {
-  const session = await currentUser();
+export default function Home() {
   return (
-    <div className="flex min-h-svh items-center justify-center">
-      <div className="flex flex-col items-center justify-center gap-4">
-        <h1 className="font-bold text-2xl">Hello World</h1>
-        <p>{session?.user.emailVerified ? 'Verified' : 'Not Verified'}</p>
-        <Button className="">Home Page</Button>
-        <SiteHeader />
+    <div className="flex flex-1 space-x-6">
+      {/* left */}
+      <div className="relative flex flex-1 flex-col space-y-4">
+        <CreatePost />
+        <ForYou />
+      </div>
+      <div className="hidden w-80 xl:block">
+        <Card>
+          <CardContent>aaa</CardContent>
+        </Card>
       </div>
     </div>
   );

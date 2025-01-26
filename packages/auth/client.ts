@@ -7,4 +7,6 @@ export const {
   useSession,
   forgetPassword,
   resetPassword,
-} = createAuthClient();
+} = createAuthClient({
+  // baseURL: 'http://localhost:3000',
+});

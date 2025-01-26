@@ -1,5 +1,5 @@
 {
-  "name": "@sandoq/db",
+  "name": "@tawasul/db",
   "version": "0.0.0",
   "main": "./index.ts",
   "types": "./index.ts",
@@ -21,7 +21,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@sandoq/typescript-config": "workspace:*",
+    "@tawasul/typescript-config": "workspace:*",
     "@types/node": "22.10.1",
     "@types/ws": "^8.5.13",
     "bufferutil": "^4.0.8",

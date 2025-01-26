@@ -1,4 +1,4 @@
-import type { auth } from '@sandoq/auth';
+import type { auth } from '@tawasul/auth/server';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
@@ -22,7 +22,6 @@ export default async function authMiddleware(request: NextRequest) {
   // if (!isAuthPage(request) && !session) {
   //   return NextResponse.redirect(new URL('/auth/sign-in', request.url));
   // }
-
   return NextResponse.next();
 }
 

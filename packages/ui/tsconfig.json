@@ -1,9 +1,9 @@
 {
-  "extends": "@sandoq/typescript-config/react-library.json",
+  "extends": "@tawasul/typescript-config/react-library.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@sandoq/ui/*": ["./src/*"]
+      "@tawasul/ui/*": ["./src/*"]
     }
   },
   "include": ["."],

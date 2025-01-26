@@ -22,7 +22,12 @@
         "useSemanticElements": "off"
       },
       "style": {
-        "noNonNullAssertion": "off"
+        "noNonNullAssertion": "off",
+        "noUselessElse": "off",
+        "useBlockStatements":"off"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "off"
       },
       "suspicious": {
         "noConsole": "off",

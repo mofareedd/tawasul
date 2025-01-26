@@ -1,5 +1,5 @@
 {
-  "extends": "@sandoq/typescript-config/nextjs.json",
+  "extends": "@tawasul/typescript-config/nextjs.json",
   "compilerOptions": {
     "baseUrl": "."
   },

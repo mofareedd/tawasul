@@ -1,5 +1,5 @@
 {
-  "extends": "@sandoq/typescript-config/base.json",
+  "extends": "@tawasul/typescript-config/base.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

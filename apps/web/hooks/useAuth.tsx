@@ -1,5 +1,10 @@
-import { forgetPassword, resetPassword, signIn, signUp } from '@sandoq/auth';
 import { useMutation } from '@tanstack/react-query';
+import {
+  forgetPassword,
+  resetPassword,
+  signIn,
+  signUp,
+} from '@tawasul/auth/client';
 
 // export function useOtp() {
 //   return useMutation({

@@ -1,4 +1,4 @@
-import { cn } from '@sandoq/ui/lib/utils';
+import { cn } from '@tawasul/ui/lib/utils';
 import type { ComponentProps } from 'react';
 
 export function IconGoogle({ className, ...props }: ComponentProps<'svg'>) {
