@@ -1,34 +1,46 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
-
 import { auth } from '@tawasul/auth/server';
-import { contract, createExpressEndpoints } from '@tawasul/contract';
-import { db } from '@tawasul/db';
 import { toNodeHandler } from 'better-auth/node';
 import cors from 'cors';
 import express from 'express';
-import { logger } from './lib/logger';
+import { STATUS } from './lib/constant';
+import { env } from './lib/env';
+import { HttpException } from './lib/exception';
+import { httpLogger } from './lib/logger';
+import errorHandler from './middleware/error-handler';
 import { routes } from './routes';
+function createApp() {
+  const app = express();
 
-const app = express();
-app.all('/api/auth/*', toNodeHandler(auth));
-app.get('/api/v1/records', async (req, res) => {
-  await db.user.deleteMany();
-  await db.session.deleteMany();
-  await db.account.deleteMany();
-  await db.verification.deleteMany();
-  await db.post.deleteMany();
-  await db.media.deleteMany();
-  res.status(200).json({
-    message: 'Deleted records',
+  app.use(
+    cors({
+      origin: ['http://localhost:3000'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      credentials: true,
+      allowedHeaders: ['Content-Type', 'Authorization'],
+      exposedHeaders: ['Content-Length'],
+    })
+  );
+
+  app.all('/api/auth/*splat', toNodeHandler(auth));
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json());
+
+  if (env.NODE_ENV === 'development') {
+    app.use(httpLogger);
+  }
+
+  app.use('/api', routes);
+  app.all('/*splat', (req, res, next) => {
+    next(
+      new HttpException({
+        message: `${req.originalUrl} not found!`,
+        statusCode: STATUS.NOT_FOUND,
+      })
+    );
   });
-});
-app.use(express.json());
-app.use(cors());
+  app.use(errorHandler);
 
-createExpressEndpoints(contract, routes, app);
+  return app;
+}
 
-app.listen(1337, () => {
-  logger.info('Server is running on port 1337');
-});
+export { createApp };

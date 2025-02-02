@@ -1,7 +1,7 @@
 import { currentUser } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { AuthBackground } from './components/auth-bg';
+import { AuthBackground } from './_components/auth-bg';
 
 export default async function AuthLayout({
   children,

@@ -2,7 +2,9 @@ import { Card, CardContent } from '@tawasul/ui/components/card';
 import { CreatePost } from './components/create-post';
 import { ForYou } from './components/for-you';
 
-export default function Home() {
+export default async function Home() {
+  // const response = await api.get('posts').json();
+  // console.log(response);
   return (
     <div className="flex flex-1 space-x-6">
       {/* left */}

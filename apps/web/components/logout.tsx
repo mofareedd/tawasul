@@ -1,6 +1,6 @@
 'use client';
 
-import { signOut } from '@tawasul/auth';
+import { signOut } from '@tawasul/auth/client';
 import { Button } from '@tawasul/ui/components/button';
 
 export default function Logout() {

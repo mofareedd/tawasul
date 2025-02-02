@@ -19,6 +19,10 @@ import { z } from 'zod';
 
 const formSchema = z.object({
   name: z.string(),
+  username: z
+    .string()
+    .min(1)
+    .transform((value) => value.replaceAll(' ', '')),
   email: z.string().email(),
   password: z.string().min(2).max(32),
 });
@@ -30,6 +34,7 @@ export function SignupForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: 'Pngo',
+      username: '',
       email: 'pngoo1997@gmail.com',
       password: '0509702223aA@',
     },
@@ -45,8 +50,13 @@ export function SignupForm() {
         }
 
         toast.success(
-          'Signed up successfully! Please check your email to verify your account'
+          `Signed up successfully! 
+          Please check your email to verify your account`
         );
+
+        setTimeout(() => {
+          location.href = '/auth/sign-in';
+        }, 2000);
       },
     });
   }
@@ -62,6 +72,21 @@ export function SignupForm() {
               <FormControl>
                 <Input
                   placeholder="Name"
+                  {...field}
+                  className="bg-accent py-5"
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  placeholder="Username"
                   {...field}
                   className="bg-accent py-5"
                 />

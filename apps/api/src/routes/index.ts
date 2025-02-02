@@ -1,6 +1,7 @@
-import { contract, initServer } from '@tawasul/contract';
-import { postRouter } from './post/route';
+import { Router } from 'express';
+import { postRoute } from './post/route';
+const routes = Router();
 
-export const routes = initServer().router(contract, {
-  posts: postRouter,
-});
+routes.use('/post', postRoute);
+
+export { routes };

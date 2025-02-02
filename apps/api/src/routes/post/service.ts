@@ -1,7 +1,22 @@
-import type { ZPosts } from '@tawasul/constants';
-import { TsRestResponseError, contract } from '@tawasul/contract';
 import { db } from '@tawasul/db';
+import type { CreatePost } from './validation';
 
+export async function getLatestPosts({
+  skip,
+  take,
+}: { take: number; skip: number }) {
+  return await db.post.findMany({
+    include: {
+      user: true,
+      media: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    skip,
+    take,
+  });
+}
 export async function getUserPosts({
   skip,
   take,
@@ -25,23 +40,7 @@ export async function getUserPosts({
 
 export async function createPost({
   input,
-}: { input: Omit<ZPosts, 'id' | 'createdAt' | 'updatedAt'> }) {
-  const user = await db.user.findFirst({
-    where: {
-      id: input.userId,
-    },
-  });
-
-  if (!user) {
-    throw new TsRestResponseError(contract.posts.create, {
-      status: 404,
-      body: {
-        message: 'Unauthorized',
-        status: 404,
-      },
-    });
-  }
-
+}: { input: CreatePost['body'] & { userId: string } }) {
   return await db.post.create({
     data: {
       content: input.content,
@@ -50,67 +49,67 @@ export async function createPost({
   });
 }
 
-export async function getPostById({ postId }: { postId: string }) {
-  return await db.post.findFirst({
-    where: {
-      id: postId,
-    },
-    include: {
-      user: true,
-      media: true,
-    },
-  });
-}
+// export async function getPostById({ postId }: { postId: string }) {
+//   return await db.post.findFirst({
+//     where: {
+//       id: postId,
+//     },
+//     include: {
+//       user: true,
+//       media: true,
+//     },
+//   });
+// }
 
-export async function deletePost({
-  postId,
-  userId,
-}: { postId: string; userId: string }) {
-  const user = await db.user.findFirst({
-    where: {
-      id: userId,
-    },
-  });
+// export async function deletePost({
+//   postId,
+//   userId,
+// }: { postId: string; userId: string }) {
+//   const user = await db.user.findFirst({
+//     where: {
+//       id: userId,
+//     },
+//   });
 
-  if (!user) {
-    throw new TsRestResponseError(contract.posts.create, {
-      status: 404,
-      body: {
-        message: 'Unauthorized',
-        status: 404,
-      },
-    });
-  }
+//   if (!user) {
+//     throw new TsRestResponseError(contract.posts.create, {
+//       status: 404,
+//       body: {
+//         message: 'Unauthorized',
+//         status: 404,
+//       },
+//     });
+//   }
 
-  const post = await db.post.findFirst({
-    where: {
-      id: postId,
-    },
-  });
+//   const post = await db.post.findFirst({
+//     where: {
+//       id: postId,
+//     },
+//   });
 
-  if (!post) {
-    throw new TsRestResponseError(contract.posts.create, {
-      status: 404,
-      body: {
-        message: 'Post not found',
-        status: 404,
-      },
-    });
-  }
+//   if (!post) {
+//     throw new TsRestResponseError(contract.posts.create, {
+//       status: 404,
+//       body: {
+//         message: 'Post not found',
+//         status: 404,
+//       },
+//     });
+//   }
 
-  if (post.userId !== userId) {
-    throw new TsRestResponseError(contract.posts.create, {
-      status: 404,
-      body: {
-        message: 'Unauthorized',
-        status: 404,
-      },
-    });
-  }
+//   if (post.userId !== userId) {
+//     throw new TsRestResponseError(contract.posts.create, {
+//       status: 404,
+//       body: {
+//         message: 'Unauthorized',
+//         status: 404,
+//       },
+//     });
+//   }
 
-  return await db.post.delete({
-    where: {
-      id: postId,
-    },
-  });
-}
+//   return await db.post.delete({
+//     where: {
+//       id: postId,
+//     },
+//   });
+// }

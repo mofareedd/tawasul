@@ -1,3 +1,4 @@
+import { usernameClient } from 'better-auth/client/plugins';
 import { createAuthClient } from 'better-auth/react';
 
 export const {
@@ -8,5 +9,6 @@ export const {
   forgetPassword,
   resetPassword,
 } = createAuthClient({
-  // baseURL: 'http://localhost:3000',
+  baseURL: 'http://localhost:1337',
+  plugins: [usernameClient()],
 });

@@ -29,8 +29,10 @@ export function useSignUp() {
       name,
       email,
       password,
+      username,
     }: {
       name: string;
+      username: string;
       email: string;
       password: string;
     }) => {
@@ -38,6 +40,7 @@ export function useSignUp() {
         name,
         email,
         password,
+        username,
       });
     },
   });

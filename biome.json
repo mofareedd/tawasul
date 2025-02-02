@@ -21,13 +21,19 @@
         "useFocusableInteractive": "off",
         "useSemanticElements": "off"
       },
+      "complexity": {
+        "noBannedTypes": "off"
+      },
       "style": {
         "noNonNullAssertion": "off",
         "noUselessElse": "off",
-        "useBlockStatements":"off"
+        "useBlockStatements": "off",
+        "noNamespace": "off"
       },
       "correctness": {
-        "useExhaustiveDependencies": "off"
+        "useExhaustiveDependencies": "off",
+        "noUnusedFunctionParameters": "off",
+        "noUnusedVariables": "off"
       },
       "suspicious": {
         "noConsole": "off",

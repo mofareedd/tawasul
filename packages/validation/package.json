@@ -1,0 +1,14 @@
+{
+  "name": "@tawasul/validation",
+  "version": "1.0.0",
+  "main": "./src/index.ts",
+  "type": "module",
+  "types": "./src/index.ts",
+  "scripts": {},
+  "peerDependencies": {
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@tawasul/typescript-config": "workspace:*"
+  }
+}

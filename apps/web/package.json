@@ -21,6 +21,7 @@
     "@tawasul/ui": "workspace:*",
     "@uploadthing/react": "^7.1.5",
     "better-auth": "^1.1.4",
+    "ky": "^1.7.4",
     "lucide-react": "0.456.0",
     "next": "^15.1.0",
     "next-themes": "^0.4.3",

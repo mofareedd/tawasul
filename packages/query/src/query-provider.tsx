@@ -1,7 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-// biome-ignore lint/style/useImportType: <explanation>
-import * as React from 'react';
-import { tsr } from './index';
+import type { ReactNode } from 'react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -12,10 +10,8 @@ const queryClient = new QueryClient({
   },
 });
 
-export const QueryProvider = ({ children }: { children: React.ReactNode }) => {
+export const QueryProvider = ({ children }: { children: ReactNode }) => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <tsr.ReactQueryProvider>{children}</tsr.ReactQueryProvider>
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 };

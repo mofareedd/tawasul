@@ -5,6 +5,8 @@ import { resend } from '@tawasul/email';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { nextCookies } from 'better-auth/next-js';
+import { username } from 'better-auth/plugins';
+
 import { keys } from './keys';
 import {
   getForgetPasswordTemplate,
@@ -15,6 +17,14 @@ export const auth = betterAuth({
   database: prismaAdapter(db, {
     provider: 'postgresql',
   }),
+  user: {
+    additionalFields: {
+      username: {
+        type: 'string',
+        defaultValue: `user${Math.floor(Math.random() * 1000000000)}`,
+      },
+    },
+  },
   socialProviders: {
     google: {
       clientId: keys().GOOGLE_CLIENT_ID,
@@ -43,6 +53,12 @@ export const auth = betterAuth({
     },
     sendOnSignUp: true,
   },
-
-  plugins: [nextCookies()],
+  trustedOrigins: ['http://localhost:3000', 'http://localhost:1337'],
+  advanced: {
+    defaultCookieAttributes: {
+      sameSite: 'none',
+      secure: true,
+    },
+  },
+  plugins: [username(), nextCookies()],
 });

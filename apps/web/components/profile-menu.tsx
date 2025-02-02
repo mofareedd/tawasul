@@ -1,3 +1,4 @@
+import { signOut } from '@tawasul/auth/client';
 import {
   Avatar,
   AvatarFallback,
@@ -33,7 +34,14 @@ export function ProfileMenu() {
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Log out</DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={async () =>
+            await signOut({}, { onSuccess: () => location.reload() })
+          }
+          className="cursor-pointer"
+        >
+          Log out
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
