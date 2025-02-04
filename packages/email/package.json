@@ -2,6 +2,15 @@
   "name": "@tawasul/email",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    },
+    "./keys": {
+      "import": "./keys.ts"
+    }
+  },
   "scripts": {
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"

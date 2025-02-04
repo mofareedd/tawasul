@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '1337:1337'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    env_file:
+      - .env
+    command: pnpm dev

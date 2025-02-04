@@ -2,6 +2,18 @@
   "name": "@tawasul/auth",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
+  "exports": {
+    "./server": {
+      "import": "./server.ts"
+    },
+    "./client": {
+      "import": "./client.ts"
+    },
+    "./keys": {
+      "import": "./keys.ts"
+    }
+  },
   "scripts": {
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"

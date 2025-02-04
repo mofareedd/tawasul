@@ -1,10 +1,10 @@
-import dotenv from 'dotenv';
-dotenv.config();
+// import dotenv from 'dotenv';
+// dotenv.config();
 import { db } from '@tawasul/db';
 import { resend } from '@tawasul/email';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
-import { nextCookies } from 'better-auth/next-js';
+// import { nextCookies } from 'better-auth/next-js';
 import { username } from 'better-auth/plugins';
 
 import { keys } from './keys';
@@ -60,5 +60,8 @@ export const auth = betterAuth({
       secure: true,
     },
   },
-  plugins: [username(), nextCookies()],
+  plugins: [
+    username(),
+    // nextCookies()
+  ],
 });

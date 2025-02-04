@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: tawasul-api
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+    ports:
+      - '1337:1337'
+    volumes:
+      - ./apps/api/:/app/apps/api
+      # - /app/node_modules
+    env_file:
+      - ./apps/api/.env
+    # command: pnpm dev

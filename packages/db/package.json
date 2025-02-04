@@ -1,8 +1,15 @@
 {
   "name": "@tawasul/db",
   "version": "0.0.0",
-  "main": "./index.ts",
-  "types": "./index.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    },
+    "./keys": {
+      "import": "./keys.ts"
+    }
+  },
   "scripts": {
     "generate": "prisma generate",
     "push": "prisma db push",

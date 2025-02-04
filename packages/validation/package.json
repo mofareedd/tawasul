@@ -1,9 +1,12 @@
 {
   "name": "@tawasul/validation",
   "version": "1.0.0",
-  "main": "./src/index.ts",
   "type": "module",
-  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    }
+  },
   "scripts": {},
   "peerDependencies": {
     "zod": "^3.24.1"
