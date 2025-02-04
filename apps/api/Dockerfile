@@ -13,9 +13,6 @@ RUN apk update && apk add --no-cache \
     openssl \
     openssl-dev
 
-# ENV PNPM_HOME="/root/.local/share/pnpm"
-# ENV PATH="${PATH}:${PNPM_HOME}"
-# RUN corepack install -g pnpm@9.14.4
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable && corepack prepare pnpm@10.0.0 --activate
@@ -53,33 +50,4 @@ FROM base AS runner
 COPY --from=installer /app .
 EXPOSE 1337
 
-# CMD [ "pnpm","migrate" ]
-
 CMD [ "node", "apps/api/dist/index.js" ]
-
-# FROM base AS production
-
-# COPY apps/api/package.json ./apps/api/package.json
-
-# RUN pnpm install --frozen-lockfile --prod
-
-# COPY . .
-
-# RUN pnpm build
-
-
-# CMD [ "node", "./dist/index.js" ]
-
-
-#============================
-# ---- Development Stage ----
-#============================
-# FROM builder AS development
-
-# COPY apps/api/package.json ./apps/api/package.json
-
-# RUN pnpm install --frozen-lockfile
-
-# COPY . .
-
-# CMD [ "pnpm", "dev" ]
