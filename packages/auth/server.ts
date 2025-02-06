@@ -1,10 +1,7 @@
-// import dotenv from 'dotenv';
-// dotenv.config();
-import { db } from '@tawasul/db';
+import { setupDB } from '@tawasul/db';
 import { resend } from '@tawasul/email';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
-// import { nextCookies } from 'better-auth/next-js';
 import { username } from 'better-auth/plugins';
 
 import { keys } from './keys';
@@ -13,6 +10,7 @@ import {
   getVerifyEmailTemplate,
 } from './template/email-templates';
 
+const db = setupDB();
 export const auth = betterAuth({
   database: prismaAdapter(db, {
     provider: 'postgresql',
@@ -33,8 +31,6 @@ export const auth = betterAuth({
   },
   emailAndPassword: {
     enabled: true,
-    autoSignIn: false,
-    requireEmailVerification: true,
     sendResetPassword: async ({ user, url }) => {
       await resend.emails.send({
         from: 'Acme <onboarding@resend.dev>',
@@ -60,8 +56,5 @@ export const auth = betterAuth({
       secure: true,
     },
   },
-  plugins: [
-    username(),
-    // nextCookies()
-  ],
+  plugins: [username()],
 });

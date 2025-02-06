@@ -2,8 +2,8 @@ import { STATUS } from '@/lib/constant';
 // import {Post} from "@prisma/client"
 import type { ZPaginationQuery } from '@tawasul/validation';
 import type { Request, Response } from 'express';
-import { createPost, getLatestPosts } from './service';
-import type { CreatePost } from './validation';
+import { createPost, getLatestPosts } from './post.service';
+import type { CreatePost } from './post.validation';
 
 export const getPostsHandler = async (
   req: Request<{}, {}, {}, ZPaginationQuery>,

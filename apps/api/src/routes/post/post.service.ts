@@ -1,5 +1,5 @@
-import { db } from '@tawasul/db';
-import type { CreatePost } from './validation';
+import { db } from '@/lib/db';
+import type { CreatePost } from './post.validation';
 
 export async function getLatestPosts({
   skip,

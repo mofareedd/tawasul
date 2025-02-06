@@ -1,8 +1,8 @@
 import authMiddleware from '@/middleware/auth-middleware';
 import { schemaValidator } from '@/middleware/validator';
 import { Router } from 'express';
-import { createPostHandler, getPostsHandler } from './controller';
-import { createPostSchema } from './validation';
+import { createPostHandler, getPostsHandler } from './post.controller';
+import { createPostSchema } from './post.validation';
 
 const postRoute = Router();
 postRoute

@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "NODE_ENV=development tsx watch src/index.ts",
-    "dev:prod": "NODE_ENV=production tsx watch src/index.ts",
-    "build": "tsup"
+    "build": "tsup",
+    "test": "vitest --run --reporter verbose",
+    "dev:prod": "NODE_ENV=production pnpm build && node dist/index.js"
   },
   "dependencies": {
     "@prisma/client": "6.0.1",
@@ -32,8 +33,11 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",
+    "@types/supertest": "^6.0.2",
+    "supertest": "^7.0.0",
     "tsup": "^8.3.5",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^3.0.5"
   }
 }

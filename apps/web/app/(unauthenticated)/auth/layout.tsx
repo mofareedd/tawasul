@@ -10,7 +10,7 @@ export default async function AuthLayout({
 }>) {
   const session = await currentUser();
 
-  if (session && session.user.emailVerified!) {
+  if (session) {
     redirect('/');
   }
   return (

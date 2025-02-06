@@ -26,22 +26,7 @@ export function useCreatePost() {
   return useMutation({
     mutationKey: ['posts'],
     mutationFn: async ({ input }: { input: CreatePostInput }) => {
-      return await api.post('test', { body: JSON.stringify(input) }).json();
-      // try {
-      //   const res = await fetch('http://localhost:1337/api/test', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json', // Ensure the request is recognized as JSON
-      //     },
-      //     credentials: 'include',
-      //     body: JSON.stringify(input),
-      //   });
-      //   const data = await res.json();
-
-      //   return data;
-      // } catch (error) {
-      //   throw new Error('Something went wrong');
-      // }
+      return await api.post('post', { json: input }).json();
     },
   });
 }
