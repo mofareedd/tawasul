@@ -13,9 +13,16 @@ export async function getLatestPosts({
     orderBy: {
       createdAt: 'desc',
     },
-    skip,
-    take,
+    take: take,
+    skip: skip,
   });
+}
+
+export function getPostsModel() {
+  return db.post;
+}
+export async function getPostsCount() {
+  return await db.post.count();
 }
 export async function getUserPosts({
   skip,

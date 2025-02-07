@@ -26,6 +26,9 @@ export default function errorHandler(
     return;
   }
 
+  // if(error instanceof Prisma.PrismaInval)
+  console.log(error);
+
   if (error instanceof HttpException) {
     let err: Record<string, unknown> = {
       message: error.message,

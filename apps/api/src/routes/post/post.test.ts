@@ -77,6 +77,6 @@ describe('POST /api/post', () => {
       .set('Accept', 'application/json')
       .send(invalidPost);
 
-    expect(res.status).toBe(STATUS.BAD_REQUEST); // Adjust the expected status based on your validation handling
+    expect(res.status).toBe(STATUS.BAD_REQUEST);
   });
 });

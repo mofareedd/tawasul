@@ -7,7 +7,7 @@ import { STATUS } from './lib/constant';
 import { env } from './lib/env';
 import { HttpException } from './lib/exception';
 import { httpLogger } from './lib/logger';
-import errorHandler from './middleware/error-handler';
+import errorHandler from './middleware/error.middleware';
 import { routes } from './routes';
 function createApp() {
   const app = express();
