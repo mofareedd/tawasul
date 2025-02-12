@@ -1,12 +1,12 @@
+import 'dotenv/config';
 import { createApp } from '@/app';
-import { createUser } from '@/lib/auth';
 import { STATUS } from '@/lib/constant';
-import { setupDB } from '@tawasul/db';
+import { auth } from '@tawasul/auth/server';
+import { db } from '@tawasul/db';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import type { CreatePost } from './post.validation';
 
-const db = setupDB({ mode: 'dev' });
 let userCookie: string[];
 const MOCK_USER = {
   email: 'test2@gmail.com',
@@ -15,7 +15,10 @@ const MOCK_USER = {
 };
 beforeAll(async () => {
   await db.$connect();
-  const newUser = await createUser(MOCK_USER);
+  const newUser = await auth.api.signUpEmail({
+    asResponse: true,
+    body: MOCK_USER,
+  });
 
   userCookie = newUser.headers.getSetCookie();
 });

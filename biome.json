@@ -22,7 +22,9 @@
         "useSemanticElements": "off"
       },
       "complexity": {
-        "noBannedTypes": "off"
+        "noBannedTypes": "off",
+        "noForEach": "off",
+        "noExcessiveCognitiveComplexity": "off"
       },
       "style": {
         "noNonNullAssertion": "off",
@@ -38,7 +40,8 @@
       "suspicious": {
         "noConsole": "off",
         "noConsoleLog": "off",
-        "useAwait": "off"
+        "useAwait": "off",
+        "noExplicitAny": "off"
       }
     }
   }

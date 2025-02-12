@@ -1,10 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import {
-  forgetPassword,
-  resetPassword,
-  signIn,
-  signUp,
-} from '@tawasul/auth/client';
+import { authClient } from '@tawasul/auth/client';
 
 // export function useOtp() {
 //   return useMutation({
@@ -36,7 +31,7 @@ export function useSignUp() {
       email: string;
       password: string;
     }) => {
-      return await signUp.email({
+      return await authClient.signUp.email({
         name,
         email,
         password,
@@ -55,7 +50,7 @@ export function useSignIn() {
       email: string;
       password: string;
     }) => {
-      return await signIn.email({
+      return await authClient.signIn.email({
         email,
         password,
       });
@@ -70,7 +65,7 @@ export function useForgotPassword() {
     }: {
       email: string;
     }) => {
-      return await forgetPassword({
+      return await authClient.forgetPassword({
         email,
         redirectTo: '/auth/reset-password',
       });
@@ -85,7 +80,7 @@ export function useResetPassword() {
     }: {
       newPassword: string;
     }) => {
-      return await resetPassword({
+      return await authClient.resetPassword({
         newPassword,
       });
     },

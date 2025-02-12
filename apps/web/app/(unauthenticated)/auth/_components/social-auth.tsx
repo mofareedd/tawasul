@@ -1,11 +1,11 @@
 'use client';
 import { IconGoogle } from '@/components/icons';
-import { signIn } from '@tawasul/auth/client';
+import { authClient } from '@tawasul/auth/client';
 import { Button } from '@tawasul/ui/components/button';
 
 export default function SocialAuth() {
   async function onSubmit() {
-    await signIn.social({
+    await authClient.signIn.social({
       provider: 'google',
     });
   }

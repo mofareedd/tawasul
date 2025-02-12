@@ -25,6 +25,10 @@ model User {
   accounts      Account[]
   Post          Post[]
 
+  bio      String?
+  birthday DateTime?
+  country  String?
+
   @@unique([email])
   @@map("user")
 }
@@ -89,33 +93,21 @@ model Post {
   @@map("posts")
 }
 
-model Media {
-  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  url       String
-  type      MediaType
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  postId    String?
-  post      Post?     @relation(fields: [postId], references: [id])
-
-  @@index([postId])
-  @@map("post_media")
-}
-
 enum MediaType {
   IMAGE
   VIDEO
 }
 
-// model Comment {
-//   id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-//   content   String
-//   reply     Comment[] @relation("reply")
-//   commentId String?   @db.Uuid
-//   Comment   Comment?  @relation("reply", fields: [commentId], references: [id])
-//   userId    String?   @db.Uuid
-//   User      User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
-//   createdAt DateTime  @default(now())
-//   Post      Post?     @relation(fields: [postId], references: [id])
-//   postId    String?
-// }
+model Media {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  url       String
+  name      String
+  type      MediaType
+  createdAt DateTime  @default(now())
+
+  postId String?
+  post   Post?   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+  @@map("media")
+}

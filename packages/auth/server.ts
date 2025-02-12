@@ -1,4 +1,4 @@
-import { setupDB } from '@tawasul/db';
+import { db } from '@tawasul/db';
 import { resend } from '@tawasul/email';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
@@ -10,7 +10,6 @@ import {
   getVerifyEmailTemplate,
 } from './template/email-templates';
 
-const db = setupDB();
 export const auth = betterAuth({
   database: prismaAdapter(db, {
     provider: 'postgresql',
@@ -20,6 +19,18 @@ export const auth = betterAuth({
       username: {
         type: 'string',
         defaultValue: `user${Math.floor(Math.random() * 1000000000)}`,
+      },
+      bio: {
+        type: 'string',
+        required: false,
+      },
+      birthday: {
+        type: 'date',
+        required: false,
+      },
+      country: {
+        type: 'string',
+        required: false,
       },
     },
   },

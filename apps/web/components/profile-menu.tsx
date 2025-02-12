@@ -1,4 +1,4 @@
-import { signOut } from '@tawasul/auth/client';
+import { authClient } from '@tawasul/auth/client';
 import {
   Avatar,
   AvatarFallback,
@@ -36,7 +36,7 @@ export function ProfileMenu() {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={async () =>
-            await signOut({}, { onSuccess: () => location.reload() })
+            await authClient.signOut({}, { onSuccess: () => location.reload() })
           }
           className="cursor-pointer"
         >

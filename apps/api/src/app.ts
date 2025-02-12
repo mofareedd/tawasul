@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { auth } from '@tawasul/auth/server';
 import { toNodeHandler } from 'better-auth/node';
 import cors from 'cors';

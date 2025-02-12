@@ -10,6 +10,8 @@
     "dev:prod": "NODE_ENV=production pnpm build && node dist/index.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.744.0",
+    "@aws-sdk/s3-request-presigner": "^3.744.0",
     "@prisma/client": "6.0.1",
     "@t3-oss/env-core": "^0.12.0",
     "@tawasul/auth": "workspace:*",
@@ -22,9 +24,11 @@
     "dotenv": "^16.4.7",
     "express": "^5.0.1",
     "helmet": "^8.0.0",
+    "multer": "1.4.5-lts.1",
     "pino": "^9.6.0",
     "pino-http": "^10.4.0",
     "pino-pretty": "^13.0.0",
+    "sharp": "^0.33.5",
     "ws": "^8.18.0",
     "zod": "^3.24.1"
   },
@@ -32,6 +36,7 @@
     "@tawasul/typescript-config": "workspace:*",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "@types/multer": "^1.4.12",
     "@types/node": "^22.10.2",
     "@types/supertest": "^6.0.2",
     "supertest": "^7.0.0",

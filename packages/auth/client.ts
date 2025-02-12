@@ -1,14 +1,11 @@
-import { usernameClient } from 'better-auth/client/plugins';
+import {
+  inferAdditionalFields,
+  usernameClient,
+} from 'better-auth/client/plugins';
 import { createAuthClient } from 'better-auth/react';
+import type { auth } from './server';
 
-export const {
-  signIn,
-  signOut,
-  signUp,
-  useSession,
-  forgetPassword,
-  resetPassword,
-} = createAuthClient({
+export const authClient = createAuthClient({
   baseURL: 'http://localhost:1337',
-  plugins: [usernameClient()],
+  plugins: [usernameClient(), inferAdditionalFields<typeof auth>()],
 });

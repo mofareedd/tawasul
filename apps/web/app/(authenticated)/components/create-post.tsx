@@ -1,11 +1,14 @@
 'use client';
 
-import { AutosizeTextarea } from '@/components/autosize-textarea';
+import {
+  type AutosizeTextAreaRef,
+  AutosizeTextarea,
+} from '@/components/autosize-textarea';
 import { FileUploader } from '@/components/file-uploader';
 import { UserAvatar } from '@/components/user-avatar';
 import { useCreatePost } from '@/hooks/use-posts';
 import { useMediaUpload, useUploadFile } from '@/hooks/use-upload-file';
-import { type CreatePostInput, createPostInput } from '@/lib/validation';
+import { EmojiPicker } from '@ferrucc-io/emoji-picker';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@tawasul/ui/components/button';
 import { Card, CardContent } from '@tawasul/ui/components/card';
@@ -23,13 +26,20 @@ import {
   FormField,
   FormItem,
 } from '@tawasul/ui/components/form';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@tawasul/ui/components/popover';
+import { type ZPosts, zPosts } from '@tawasul/validation';
+import { Smile } from 'lucide-react';
 import { Paperclip } from 'lucide-react';
-import { useState } from 'react';
+import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 export function CreatePost() {
-  const [loading, setLoading] = useState(false);
+  const textareaRef = useRef<AutosizeTextAreaRef | null>(null);
 
   const { onUpload, progresses, uploadedFiles, isUploading } = useUploadFile(
     'imageUploader',
@@ -37,27 +47,54 @@ export function CreatePost() {
   );
 
   const { startUpload, files } = useMediaUpload();
-  const { mutateAsync } = useCreatePost();
-  const form = useForm<CreatePostInput>({
-    resolver: zodResolver(createPostInput),
+
+  const { mutateAsync, isPending } = useCreatePost();
+  const form = useForm<ZPosts>({
+    resolver: zodResolver(zPosts),
     defaultValues: {
       content: '',
-      images: [],
+      media: [],
     },
   });
+  const insertEmoji = (emoji: string) => {
+    if (!textareaRef.current) return;
 
-  async function onSubmit(input: CreatePostInput) {
-    // mutateAsync({ input });
+    const textarea = textareaRef.current.textArea;
+    textarea.focus();
+    const { selectionStart, selectionEnd } = textarea;
+    const currentText = form.getValues('content');
 
+    // Insert emoji at cursor position
+    const newText =
+      currentText.substring(0, selectionStart) +
+      emoji +
+      currentText.substring(selectionEnd);
+
+    // Update the form field
+    form.setValue('content', newText);
+
+    // Move cursor after emoji
+    setTimeout(() => {
+      textarea.setSelectionRange(
+        selectionStart + emoji.length,
+        selectionStart + emoji.length
+      );
+      textarea.focus();
+    }, 0);
+  };
+
+  async function onSubmit(input: ZPosts) {
+    if (!input.content && input.media?.length === 0) {
+      return toast.error('Please write something or upload files');
+    }
     toast.promise(mutateAsync({ input }), {
       loading: 'Loading...',
       success: (data) => {
+        form.reset();
         return 'Post has been created';
       },
       error: 'Error',
     });
-    // const json = await api.get('me').json();
-    // console.log(json);
   }
 
   return (
@@ -76,9 +113,10 @@ export function CreatePost() {
                       <FormControl>
                         <AutosizeTextarea
                           {...field}
+                          ref={textareaRef}
                           minHeight={40}
                           placeholder="Share Something"
-                          disabled={loading}
+                          disabled={isPending}
                           className="resize-none focus-visible:ring-0 dark:border-muted-foreground dark:bg-accent/40"
                         />
                       </FormControl>
@@ -86,6 +124,30 @@ export function CreatePost() {
                   )}
                 />
                 <div className="flex items-center space-x-2 pt-1">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size={'icon'}
+                        className="m-0 h-6 w-8 bg-transparent p-0"
+                        type="button"
+                      >
+                        <Smile className="h-4 w-4" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0">
+                      <EmojiPicker
+                        onEmojiSelect={(emoji) => insertEmoji(emoji)}
+                      >
+                        <EmojiPicker.Header>
+                          <EmojiPicker.Input placeholder="Search emoji" />
+                        </EmojiPicker.Header>
+                        <EmojiPicker.Group>
+                          <EmojiPicker.List />
+                        </EmojiPicker.Group>
+                      </EmojiPicker>
+                    </PopoverContent>
+                  </Popover>
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button
@@ -105,7 +167,7 @@ export function CreatePost() {
                       </DialogHeader>
                       <FormField
                         control={form.control}
-                        name="images"
+                        name="media"
                         render={({ field }) => (
                           <div className="space-y-6">
                             <FormItem className="w-full">
@@ -130,7 +192,7 @@ export function CreatePost() {
                 </div>
               </div>
 
-              <Button disabled={loading} type="submit" className="">
+              <Button disabled={isPending} type="submit" className="">
                 Send
               </Button>
             </div>

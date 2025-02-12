@@ -6,21 +6,9 @@ import { keys } from './keys';
 
 neonConfig.webSocketConstructor = ws;
 
-// const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-// const adapter = new PrismaNeon(pool);
+const pool = new Pool({ connectionString: keys().DATABASE_URL });
+const adapter = new PrismaNeon(pool);
 
-// export const db = new PrismaClient({ adapter });
-
-export const setupDB = ({
-  mode = 'dev',
-}: { mode?: 'dev' | 'production' } = {}) =>
-  new PrismaClient({
-    adapter: new PrismaNeon(
-      new Pool({
-        connectionString:
-          mode === 'dev' ? keys().DEV_DATABASE_URL : keys().DATABASE_URL,
-      })
-    ),
-  });
+export const db = new PrismaClient({ adapter });
 
 export * from '@prisma/client';

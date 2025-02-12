@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ferrucc-io/emoji-picker": "^0.0.41",
     "@hookform/resolvers": "^3.10.0",
     "@prisma/client": "6.0.1",
     "@t3-oss/env-nextjs": "^0.11.1",
@@ -18,9 +19,12 @@
     "@tawasul/db": "workspace:*",
     "@tawasul/email": "workspace:^",
     "@tawasul/query": "workspace:*",
+    "@tawasul/types": "workspace:^",
     "@tawasul/ui": "workspace:*",
+    "@tawasul/validation": "workspace:*",
     "@uploadthing/react": "^7.1.5",
     "better-auth": "^1.1.4",
+    "date-fns": "^4.1.0",
     "ky": "^1.7.4",
     "lucide-react": "0.456.0",
     "next": "^15.1.0",

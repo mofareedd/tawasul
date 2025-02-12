@@ -1,16 +1,33 @@
 import { STATUS } from '@/lib/constant';
+import { isValidNumber } from '@/lib/utils';
 import type { Request, Response } from 'express';
-import { createPost, getLatestPosts, getPostsCount } from './post.service';
-import type { CreatePost, PostQueryInput } from './post.validation';
+import {
+  createPost,
+  deletePost,
+  findManyPosts,
+  getPostsCount,
+} from './post.service';
+import type {
+  CreatePost,
+  PostParamsInput,
+  PostQueryInput,
+} from './post.validation';
 
 export const getPostsHandler = async (
   req: Request<{}, {}, {}, PostQueryInput['query']>,
   res: Response
 ) => {
-  const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 10;
+  const page =
+    req.query?.page && isValidNumber(req.query.page)
+      ? Number(req.query.page)
+      : 1;
 
-  const posts = await getLatestPosts({
+  const limit =
+    req.query?.limit && isValidNumber(req.query.limit)
+      ? Number(req.query.limit)
+      : 10;
+
+  const posts = await findManyPosts({
     skip: (page - 1) * limit,
     take: limit,
   });
@@ -40,8 +57,27 @@ export const createPostHandler = async (
   res: Response
 ) => {
   const post = await createPost({
-    input: { ...req.body, userId: req.user.id },
+    input: {
+      ...req.body,
+      media: Array.isArray(req.files) && req.files.length > 0 ? req.files : [],
+      userId: req.user.id,
+    },
   });
 
   res.status(STATUS.CREATED).json(post);
+};
+
+export const deletePostHandler = async (
+  req: Request<PostParamsInput['params']>,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  await deletePost({
+    input: {
+      id,
+      userId: req.user.id,
+    },
+  });
+  res.status(STATUS.CREATED).json({ message: 'Post deleted successfully!' });
 };

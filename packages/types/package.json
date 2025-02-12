@@ -1,0 +1,13 @@
+{
+  "name": "@tawasul/types",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts"
+    }
+  },
+  "devDependencies": {
+    "@tawasul/typescript-config": "workspace:*"
+  }
+}
