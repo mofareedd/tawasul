@@ -47,7 +47,7 @@ export function getErrorMessage(error: unknown): string {
 
 export default function errorHandler(
   error: HttpException,
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ) {

@@ -6,7 +6,7 @@ import type { NextFunction, Request, Response } from 'express';
 
 const authMiddleware = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ) => {
   const session = await auth.api.getSession({
