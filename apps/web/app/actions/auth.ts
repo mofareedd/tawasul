@@ -1,6 +1,6 @@
 'use server';
 
-import { auth } from '@tawasul/auth';
+import { auth } from '@tawasul/auth/server';
 
 export const signIn = async () => {
   return await auth.api.signInEmail({

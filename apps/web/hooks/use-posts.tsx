@@ -79,10 +79,33 @@ export function useCreatePost({ userId }: { userId?: string } = {}) {
 }
 
 export function useDeletePost({ userId }: { userId?: string } = {}) {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationKey: ['post-feed'],
+    // mutationKey: ['post-feed'],
     mutationFn: async ({ postId }: { postId: string }) => {
-      return kyInstance.delete(`post/${postId}`);
+      return kyInstance.delete(`post/${postId}`).json<TPost>();
+    },
+    onSuccess: async (deletedPost) => {
+      const queryFilter: QueryFilters<
+        InfiniteData<TApiResponse<TPost[]>, number | null>
+      > = { queryKey: ['post-feed'] };
+
+      await queryClient.cancelQueries(queryFilter);
+
+      queryClient.setQueriesData<
+        InfiniteData<TApiResponse<TPost[]>, number | null>
+      >(queryFilter, (oldData) => {
+        if (!oldData) return;
+
+        return {
+          pageParams: oldData.pageParams,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            data: page.data.filter((p) => p.id !== deletedPost.id),
+          })),
+        };
+      });
     },
   });
 }

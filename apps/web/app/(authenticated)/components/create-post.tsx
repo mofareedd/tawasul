@@ -7,7 +7,6 @@ import {
 import { FileUploader } from '@/components/file-uploader';
 import { UserAvatar } from '@/components/user-avatar';
 import { useCreatePost } from '@/hooks/use-posts';
-import { useMediaUpload, useUploadFile } from '@/hooks/use-upload-file';
 import { EmojiPicker } from '@ferrucc-io/emoji-picker';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@tawasul/ui/components/button';
@@ -40,13 +39,6 @@ import { toast } from 'sonner';
 
 export function CreatePost() {
   const textareaRef = useRef<AutosizeTextAreaRef | null>(null);
-
-  const { onUpload, progresses, uploadedFiles, isUploading } = useUploadFile(
-    'imageUploader',
-    { defaultUploadedFiles: [] }
-  );
-
-  const { startUpload, files } = useMediaUpload();
 
   const { mutateAsync, isPending } = useCreatePost();
   const form = useForm<ZPosts>({
@@ -177,10 +169,9 @@ export function CreatePost() {
                                   onValueChange={field.onChange}
                                   maxFileCount={4}
                                   maxSize={4 * 1024 * 1024}
-                                  progresses={progresses}
                                   // pass the onUpload function here for direct upload
                                   // onUpload={uploadFiles}
-                                  disabled={isUploading}
+                                  disabled={isPending}
                                 />
                               </FormControl>
                             </FormItem>
