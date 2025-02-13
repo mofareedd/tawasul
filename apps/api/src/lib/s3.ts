@@ -1,5 +1,6 @@
 import { randomBytes } from 'node:crypto';
 import {
+  DeleteObjectCommand,
   GetObjectCommand,
   PutObjectCommand,
   S3Client,
@@ -35,6 +36,15 @@ export async function uploadFile({ file }: { file: Express.Multer.File }) {
   const newMedia = await s3.send(command);
 
   return { ...newMedia, key: randomImageName };
+}
+
+export async function deleteFile(objectKey: string) {
+  return await s3.send(
+    new DeleteObjectCommand({
+      Bucket: env.BUCKET_NAME,
+      Key: objectKey,
+    })
+  );
 }
 
 export async function retrieveFileUrl(objectKey: string) {

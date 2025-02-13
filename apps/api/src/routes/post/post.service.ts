@@ -1,6 +1,6 @@
 import { STATUS } from '@/lib/constant';
 import { HttpException } from '@/lib/exception';
-import { retrieveFileUrl, uploadFile } from '@/lib/s3';
+import { deleteFile, retrieveFileUrl, uploadFile } from '@/lib/s3';
 import type { Prisma } from '@prisma/client';
 import { db } from '@tawasul/db';
 import type { CreatePost, PostParamsInput } from './post.validation';
@@ -89,6 +89,10 @@ export async function createPost({
       content: input.content,
       userId: input.userId,
     },
+    include: {
+      user: true,
+      media: true,
+    },
   });
 
   if (!input.media || input?.media.length === 0) {
@@ -144,6 +148,9 @@ export async function deletePost({
     where: {
       id: input.id,
     },
+    include: {
+      media: true,
+    },
   });
 
   if (!post) {
@@ -159,6 +166,16 @@ export async function deletePost({
       statusCode: STATUS.UNAUTHORIZED,
     });
   }
+
+  if (!post.media || post?.media.length === 0) {
+    return await db.post.delete({
+      where: {
+        id: input.id,
+      },
+    });
+  }
+
+  await Promise.all(post.media.map((m) => deleteFile(m.name)));
 
   return await db.post.delete({
     where: {

@@ -73,11 +73,11 @@ export const deletePostHandler = async (
 ) => {
   const { id } = req.params;
 
-  await deletePost({
+  const deletedPost = await deletePost({
     input: {
       id,
       userId: req.user.id,
     },
   });
-  res.status(STATUS.CREATED).json({ message: 'Post deleted successfully!' });
+  res.status(STATUS.CREATED).json(deletedPost);
 };
