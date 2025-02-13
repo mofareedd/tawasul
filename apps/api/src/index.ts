@@ -3,6 +3,7 @@ import 'dotenv/config';
 import { createApp } from './app';
 import { env } from './lib/env';
 import { logger } from './lib/logger';
+import { startMetricServer } from './lib/mertrics';
 
 const PORT = env.PORT;
 
@@ -13,6 +14,7 @@ const server = createApp().listen(PORT, (e) => {
     console.log(e);
   }
   logger.info(`Server is running on port ${PORT}`);
+  startMetricServer();
 });
 
 function gracefullShutdown() {
