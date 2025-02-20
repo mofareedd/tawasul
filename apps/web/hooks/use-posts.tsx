@@ -3,12 +3,13 @@ import { kyInstance } from '@/lib/ky';
 import {
   type InfiniteData,
   type QueryFilters,
+  type QueryKey,
   useInfiniteQuery,
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
 import type { TApiResponse, TPost } from '@tawasul/types';
-import type { ZPosts } from '@tawasul/validation';
+import type { ZComments, ZPosts } from '@tawasul/validation';
 
 export function useInfinitePosts() {
   return useInfiniteQuery({
@@ -26,7 +27,7 @@ export function useInfinitePosts() {
   });
 }
 
-export function useCreatePost({ userId }: { userId?: string } = {}) {
+export function useCreatePost() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ['posts'],
@@ -78,7 +79,7 @@ export function useCreatePost({ userId }: { userId?: string } = {}) {
   });
 }
 
-export function useDeletePost({ userId }: { userId?: string } = {}) {
+export function useDeletePost() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -105,6 +106,22 @@ export function useDeletePost({ userId }: { userId?: string } = {}) {
             data: page.data.filter((p) => p.id !== deletedPost.id),
           })),
         };
+      });
+    },
+  });
+}
+
+export function useCreateComment({ postId }: { postId: string }) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (input: ZComments) => {
+      return await kyInstance.post('comment', { json: input }).json();
+    },
+    onSuccess: async () => {
+      const queryKey: QueryKey = ['comments', postId];
+      queryClient.invalidateQueries({
+        queryKey,
       });
     },
   });

@@ -1,14 +1,14 @@
 'use client';
 
-import {
-  type AutosizeTextAreaRef,
-  AutosizeTextarea,
-} from '@/components/autosize-textarea';
 import { FileUploader } from '@/components/file-uploader';
-import { UserAvatar } from '@/components/user-avatar';
+import { UserAvatar } from '@/components/user/user-avatar';
 import { useCreatePost } from '@/hooks/use-posts';
 import { EmojiPicker } from '@ferrucc-io/emoji-picker';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  type AutosizeTextAreaRef,
+  AutosizeTextarea,
+} from '@tawasul/ui/components/autosize-textarea';
 import { Button } from '@tawasul/ui/components/button';
 import { Card, CardContent } from '@tawasul/ui/components/card';
 import {
@@ -31,7 +31,7 @@ import {
   PopoverTrigger,
 } from '@tawasul/ui/components/popover';
 import { type ZPosts, zPosts } from '@tawasul/validation';
-import { Smile } from 'lucide-react';
+import { SendHorizonal, Smile } from 'lucide-react';
 import { Paperclip } from 'lucide-react';
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
@@ -81,7 +81,7 @@ export function CreatePost() {
     }
     toast.promise(mutateAsync({ input }), {
       loading: 'Loading...',
-      success: (data) => {
+      success: (_data) => {
         form.reset();
         return 'Post has been created';
       },
@@ -96,7 +96,7 @@ export function CreatePost() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="">
             <div className="flex space-x-2">
               <UserAvatar />
-              <div className="flex flex-1 flex-col">
+              <div className="flex flex-1 items-start">
                 <FormField
                   control={form.control}
                   name="content"
@@ -109,13 +109,13 @@ export function CreatePost() {
                           minHeight={40}
                           placeholder="Share Something"
                           disabled={isPending}
-                          className="resize-none focus-visible:ring-0 dark:border-muted-foreground dark:bg-accent/40"
+                          className="resize-none border-0 focus-visible:ring-0 dark:border-muted-foreground dark:bg-accent/40"
                         />
                       </FormControl>
                     </FormItem>
                   )}
                 />
-                <div className="flex items-center space-x-2 pt-1">
+                <div className="flex items-center space-x-2">
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
@@ -145,9 +145,14 @@ export function CreatePost() {
                       <Button
                         variant="outline"
                         size={'icon'}
-                        className="m-0 h-6 w-8 bg-transparent p-0"
+                        className="relative m-0 h-6 w-8 bg-transparent p-0"
                       >
                         <Paperclip className="h-4 w-4" />
+                        {form.getValues('media')!.length > 0 ? (
+                          <div className="-right-1 -top-1 absolute flex h-3 w-3 items-center justify-center rounded-full bg-red-400 text-white text-xs">
+                            {form.getValues('media')!.length}
+                          </div>
+                        ) : null}
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-xl">
@@ -183,11 +188,16 @@ export function CreatePost() {
                 </div>
               </div>
 
-              <Button disabled={isPending} type="submit" className="">
-                Send
+              <Button
+                variant="default"
+                size={'icon'}
+                className="m-0 h-6 w-8 p-0"
+                disabled={isPending}
+                type="submit"
+              >
+                <SendHorizonal />
               </Button>
             </div>
-            {/* <Separator /> */}
           </form>
         </Form>
       </CardContent>

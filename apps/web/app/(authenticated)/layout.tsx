@@ -1,9 +1,10 @@
-import SiteHeader from '@/components/site-header';
+import { AppSidebar } from '@/components/layout/app-sidebar';
+import { SiteHeader } from '@/components/layout/site-header';
 import { currentUser } from '@/lib/auth';
+import { SidebarInset, SidebarProvider } from '@tawasul/ui/components/sidebar';
 import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { Sidebar } from './components/sidebar';
-
+import { Contacts } from './_components/contacts';
 export default async function AppLayout({
   children,
 }: Readonly<{
@@ -16,14 +17,17 @@ export default async function AppLayout({
   }
 
   return (
-    <main className="bg-accent dark:bg-background">
-      <div className="container mx-auto">
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
         <SiteHeader />
-        <div className="flex min-h-screen sm:space-x-6 sm:py-4">
-          <Sidebar />
-          {children}
+        <div className="flex">
+          <div className="min-h-screen flex-1 bg-accent px-3 py-4 2xl:px-14 dark:bg-background">
+            {children}
+          </div>
+          <Contacts />
         </div>
-      </div>
-    </main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

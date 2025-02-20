@@ -5,7 +5,8 @@ import multer from 'multer';
 import {
   createPostHandler,
   deletePostHandler,
-  getPostsHandler,
+  findPostByIdHandler,
+  findPostsHandler,
 } from './post.controller';
 import {
   createPostSchema,
@@ -19,7 +20,7 @@ const upload = multer({ storage: storage });
 const postRoute = Router();
 postRoute
   .route('/')
-  .get(schemaValidator(postQuerySchema), getPostsHandler)
+  .get(schemaValidator(postQuerySchema), findPostsHandler)
   .post(
     authMiddleware,
     upload.array('media', 2),
@@ -29,6 +30,7 @@ postRoute
 
 postRoute
   .route('/:id')
+  .get(schemaValidator(postParamsSchema), findPostByIdHandler)
   .delete(authMiddleware, schemaValidator(postParamsSchema), deletePostHandler);
 
 export { postRoute };

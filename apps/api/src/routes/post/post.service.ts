@@ -1,34 +1,39 @@
 import { STATUS } from '@/lib/constant';
+import { env } from '@/lib/env';
 import { HttpException } from '@/lib/exception';
-import { deleteFile, retrieveFileUrl, uploadFile } from '@/lib/s3';
+import { postDetailsKeyById } from '@/lib/kv';
+import { deleteFile, uploadFile } from '@/lib/s3';
 import type { Prisma } from '@prisma/client';
 import { db } from '@tawasul/db';
+import { redis } from '@tawasul/redis';
 import type { CreatePost, PostParamsInput } from './post.validation';
 
-export async function postsWithMediaUrls(
+export function postsWithMediaUrls(
   posts: Prisma.PostGetPayload<{ include: { user: true; media: true } }>[]
 ) {
-  return Promise.all(
-    posts.map(async (p) => {
-      if (p.media && p.media.length > 0) {
-        await Promise.all(
-          p.media.map(async (m) => {
-            m.url = await retrieveFileUrl(m.name);
-          })
-        );
-      }
-      return p;
-    })
-  );
+  return posts.map((p) => {
+    if (p.media && p.media.length > 0) {
+      p.media.map((m) => {
+        m.url = `${env.CLOUD_FRONT_URL}/${m.name}`;
+      });
+    }
+
+    return p;
+  });
 }
 export async function findManyPosts({
   skip,
   take,
-}: { take: number; skip: number }) {
+  userId,
+}: { take: number; skip: number; userId?: string }) {
   const posts = await db.post.findMany({
     include: {
       user: true,
       media: true,
+      comment: true,
+    },
+    where: {
+      ...(userId ? { userId } : {}),
     },
     orderBy: {
       createdAt: 'desc',
@@ -37,7 +42,8 @@ export async function findManyPosts({
     skip: skip,
   });
 
-  const postsWithMedia = await postsWithMediaUrls(posts);
+  const postsWithMedia = postsWithMediaUrls(posts);
+
   return postsWithMedia;
 }
 
@@ -47,36 +53,6 @@ export function getPostsModel() {
 
 export async function getPostsCount() {
   return await db.post.count();
-}
-export async function getUserPosts({
-  skip,
-  take,
-  userId,
-}: { take: number; skip: number; userId: string }) {
-  const posts = await db.post.findMany({
-    where: {
-      userId,
-    },
-    include: {
-      user: true,
-      media: true,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-    skip,
-    take,
-  });
-
-  for (const p of posts) {
-    if (p.media.length > 0) {
-      p.media.forEach(async (m) => {
-        m.url = await retrieveFileUrl(m.name);
-      });
-    }
-  }
-
-  return posts;
 }
 
 export async function createPost({
@@ -124,26 +100,52 @@ export async function createPost({
     },
   });
 
-  if (!post?.media) {
-    return post;
-  }
-
-  if (post.media && post.media.length > 0) {
-    await Promise.all(
-      post.media.map(async (m) => {
-        m.url = await retrieveFileUrl(m.name);
-      })
-    );
+  if (post?.media && post.media.length > 0) {
+    for (const media of post.media) {
+      media.url = `${env.CLOUD_FRONT_URL}/${media.name}`;
+    }
   }
 
   return post;
 }
 
-export async function deletePost({
-  input,
-}: {
-  input: PostParamsInput['params'] & { userId: string };
-}) {
+export async function findPostById(input: PostParamsInput['params']) {
+  const cachedValue = await redis.get(postDetailsKeyById(input.id));
+  if (cachedValue) {
+    return cachedValue;
+  }
+
+  const post = await db.post.findFirst({
+    where: {
+      id: input.id,
+    },
+    include: {
+      media: true,
+      user: true,
+    },
+  });
+
+  if (!post) {
+    throw new HttpException({
+      message: 'Post not found',
+      statusCode: STATUS.NOT_FOUND,
+    });
+  }
+
+  if (post.media && post?.media.length > 0) {
+    for (const media of post.media) {
+      media.url = `${env.CLOUD_FRONT_URL}/${media.name}`;
+    }
+  }
+
+  await redis.set(postDetailsKeyById(input.id), JSON.stringify(post));
+
+  return post;
+}
+
+export async function deletePost(
+  input: PostParamsInput['params'] & { userId: string }
+) {
   const post = await db.post.findFirst({
     where: {
       id: input.id,
@@ -167,15 +169,11 @@ export async function deletePost({
     });
   }
 
-  if (!post.media || post?.media.length === 0) {
-    return await db.post.delete({
-      where: {
-        id: input.id,
-      },
-    });
+  if (post.media && post?.media.length > 0) {
+    await Promise.all(post.media.map((m) => deleteFile(m.name)));
   }
 
-  await Promise.all(post.media.map((m) => deleteFile(m.name)));
+  await redis.del(postDetailsKeyById(post.id));
 
   return await db.post.delete({
     where: {

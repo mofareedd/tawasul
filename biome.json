@@ -36,6 +36,9 @@
         "useExhaustiveDependencies": "off",
         "noUnusedFunctionParameters": "off"
       },
+      "nursery": {
+        "noDocumentCookie": "off"
+      },
       "suspicious": {
         "noConsole": "off",
         "noConsoleLog": "off",

@@ -1,15 +1,21 @@
+import type { Session } from '@/lib/auth';
 import { Card, CardContent } from '@tawasul/ui/components/card';
-export function ProfileInfo() {
+import { UserAvatar } from './user-avatar';
+
+interface IProfileInfo {
+  user: Session['user'];
+}
+export function ProfileInfo({ user }: IProfileInfo) {
   return (
     <Card>
       <CardContent className="space-y-6 rounded-xl bg-accent/50 p-4">
         <div className="flex items-center space-x-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-100">
-            x
-          </div>
+          <UserAvatar name={user.name} src={user.image!} />
           <div className="flex flex-col">
-            <p className="text-sm">Mohamed Fareed</p>
-            <span className="text-muted-foreground text-xs">@moefrdev</span>
+            <p className="text-sm">{user.name}</p>
+            <span className="text-muted-foreground text-xs">
+              @{user.username}
+            </span>
           </div>
         </div>
 

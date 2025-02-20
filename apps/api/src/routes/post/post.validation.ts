@@ -1,4 +1,4 @@
-import { zPathParams, zPosts } from '@tawasul/validation';
+import { zPosts } from '@tawasul/validation';
 import type { Express } from 'express';
 import { z } from 'zod';
 export const createPostSchema = z.object({
@@ -11,13 +11,16 @@ export const createPostSchema = z.object({
 });
 
 export const postParamsSchema = z.object({
-  params: zPathParams,
+  params: z.object({
+    id: z.string().uuid(),
+  }),
 });
 
 export const postQuerySchema = z.object({
   query: z.object({
     limit: z.string().optional(),
     page: z.string().optional(),
+    userid: z.string().optional(),
   }),
 });
 

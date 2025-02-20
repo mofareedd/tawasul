@@ -1,6 +1,6 @@
 'use client';
 
-import { IconSpinner } from '@/components/icons';
+import { Icons } from '@/components/icons';
 import { useSignIn } from '@/hooks/useAuth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@tawasul/ui/components/button';
@@ -99,7 +99,7 @@ export function LoginForm() {
           className="w-full rounded-full"
           disabled={isPending}
         >
-          {isPending ? <IconSpinner className="mr-2" /> : null}
+          {isPending ? <Icons.spinner className="mr-2" /> : null}
           Login
         </Button>
 

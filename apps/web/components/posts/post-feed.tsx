@@ -18,10 +18,10 @@ export function PostFeed() {
   return (
     <InfiniteScroll
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
-      className="space-y-4"
+      className="flex flex-col space-y-4"
     >
       {posts.map((p) => (
-        <PostCard key={p.id} post={p} />
+        <PostCard key={p.id} post={p} asLink />
       ))}
     </InfiniteScroll>
   );

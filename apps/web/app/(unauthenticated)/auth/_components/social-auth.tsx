@@ -1,5 +1,5 @@
 'use client';
-import { IconGoogle } from '@/components/icons';
+import { Icons } from '@/components/icons';
 import { authClient } from '@tawasul/auth/client';
 import { Button } from '@tawasul/ui/components/button';
 
@@ -12,7 +12,7 @@ export default function SocialAuth() {
   return (
     <div className="w-full space-y-4">
       <Button onClick={onSubmit} variant="outline" className="w-full">
-        <IconGoogle />
+        <Icons.google />
         Login with Google
       </Button>
     </div>

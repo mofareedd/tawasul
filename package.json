@@ -8,7 +8,7 @@
     "format": "ultracite format",
     "test": "turbo test",
     "analyze": "turbo analyze",
-    "migrate": "cd packages/db && pnpx prisma format && pnpx prisma generate",
+    "migrate": "cd packages/db && pnpx prisma format && pnpx prisma generate && pnpx prisma db push",
     "clean": "git clean -xdf node_modules"
   },
   "devDependencies": {

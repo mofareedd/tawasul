@@ -5,6 +5,7 @@ import {
   createPost,
   deletePost,
   findManyPosts,
+  findPostById,
   getPostsCount,
 } from './post.service';
 import type {
@@ -13,7 +14,7 @@ import type {
   PostQueryInput,
 } from './post.validation';
 
-export const getPostsHandler = async (
+export const findPostsHandler = async (
   req: Request<{}, {}, {}, PostQueryInput['query']>,
   res: Response
 ) => {
@@ -30,6 +31,7 @@ export const getPostsHandler = async (
   const posts = await findManyPosts({
     skip: (page - 1) * limit,
     take: limit,
+    userId: req.query?.userid ?? undefined,
   });
   const totalItems = await getPostsCount();
 
@@ -67,6 +69,18 @@ export const createPostHandler = async (
   res.status(STATUS.CREATED).json(post);
 };
 
+export const findPostByIdHandler = async (
+  req: Request<PostParamsInput['params']>,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  const post = await findPostById({
+    id,
+  });
+  res.status(STATUS.OK).json(post);
+};
+
 export const deletePostHandler = async (
   req: Request<PostParamsInput['params']>,
   res: Response
@@ -74,10 +88,8 @@ export const deletePostHandler = async (
   const { id } = req.params;
 
   const deletedPost = await deletePost({
-    input: {
-      id,
-      userId: req.user.id,
-    },
+    id,
+    userId: req.user.id,
   });
   res.status(STATUS.CREATED).json(deletedPost);
 };

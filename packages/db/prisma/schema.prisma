@@ -28,6 +28,7 @@ model User {
   bio      String?
   birthday DateTime?
   country  String?
+  Comment  Comment[]
 
   @@unique([email])
   @@map("user")
@@ -81,13 +82,14 @@ model Verification {
 }
 
 model Post {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   media     Media[]
+  comment   Comment[]
 
   @@index([userId])
   @@map("posts")
@@ -110,4 +112,26 @@ model Media {
 
   @@index([postId])
   @@map("media")
+}
+
+model Comment {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  postId String?
+  post   Post?   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+  @@index([userId])
+  @@map("comment")
+}
+
+model Group {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  @@map("group")
 }

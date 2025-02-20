@@ -1,11 +1,5 @@
-import {
-  Boxes,
-  Handshake,
-  LayoutGrid,
-  type LucideIcon,
-  Mail,
-  Settings,
-} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+import type { NavItem } from './types';
 
 export interface INavLinks {
   title: string;
@@ -13,35 +7,36 @@ export interface INavLinks {
   variant: 'default' | 'ghost';
   href: string;
 }
-export const navLinks: INavLinks[] = [
+
+export const navItems: NavItem[] = [
   {
     title: 'Feed',
-    icon: LayoutGrid,
-    variant: 'default',
-    href: '/',
+    url: '/',
+    icon: 'feed',
+    isActive: false,
   },
   {
     title: 'Friends',
-    icon: Handshake,
-    variant: 'ghost',
-    href: '/friends',
+    url: '/friends',
+    icon: 'friends',
+    isActive: false,
   },
   {
-    title: 'Community',
-    icon: Boxes,
-    variant: 'ghost',
-    href: '/community',
+    title: 'Groups',
+    url: '/groups',
+    icon: 'group',
+    isActive: false,
   },
   {
     title: 'Messages',
-    icon: Mail,
-    variant: 'ghost',
-    href: '/messages',
+    url: '/messages',
+    icon: 'messages',
+    isActive: false,
   },
   {
-    title: 'Settings',
-    icon: Settings,
-    variant: 'ghost',
-    href: '/settings',
+    title: 'Setting',
+    url: '/settings',
+    icon: 'settings',
+    isActive: false,
   },
 ];

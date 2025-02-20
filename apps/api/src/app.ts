@@ -1,7 +1,8 @@
 import { auth } from '@tawasul/auth/server';
 import { toNodeHandler } from 'better-auth/node';
 import cors from 'cors';
-import express from 'express';
+import express, {} from 'express';
+import helmet from 'helmet';
 import { corsConfig } from './lib/cors';
 import { env } from './lib/env';
 import { httpLogger } from './lib/logger';
@@ -14,8 +15,10 @@ function createApp() {
   app.use(cors(corsConfig));
 
   app.all('/api/auth/*splat', toNodeHandler(auth));
-  app.use(express.urlencoded({ extended: true }));
-  app.use(express.json());
+  app
+    .use(express.urlencoded({ extended: true }))
+    .use(express.json())
+    .use(helmet());
 
   if (env.NODE_ENV === 'development') {
     app.use(httpLogger);
