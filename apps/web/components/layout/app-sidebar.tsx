@@ -38,6 +38,8 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Icons } from '../icons';
+import { authClient } from '@tawasul/auth/client';
+import { CurrentUserProps } from '@/lib/types';
 
 export const company = {
   name: 'Tawasul',
@@ -45,7 +47,9 @@ export const company = {
   plan: 'Enterprise',
 };
 
-export function AppSidebar() {
+
+interface IAppSidebar extends CurrentUserProps { }
+export function AppSidebar({ currentUser }: IAppSidebar) {
   const pathname = usePathname();
 
   return (
@@ -100,10 +104,10 @@ export function AppSidebar() {
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">
-                      Mohammed Fareed
+                      {currentUser.name}
                     </span>
                     <span className="truncate text-xs">
-                      m.fareeed1997@gmail.com
+                      {currentUser.email}
                     </span>
                   </div>
                   <ChevronsUpDown className="ml-auto size-4" />
@@ -123,10 +127,10 @@ export function AppSidebar() {
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
                       <span className="truncate font-semibold">
-                        Mohamed Fareed
+                        {currentUser.name}
                       </span>
                       <span className="truncate text-xs">
-                        m.fareeed1997@gmail.com
+                        {currentUser.email}
                       </span>
                     </div>
                   </div>
@@ -148,7 +152,12 @@ export function AppSidebar() {
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={async () =>
+                    await authClient.signOut({}, { onSuccess: () => location.reload() })
+                  }
+                  className="cursor-pointer"
+                >
                   <LogOut />
                   Log out
                 </DropdownMenuItem>

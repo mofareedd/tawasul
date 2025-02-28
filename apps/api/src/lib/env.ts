@@ -7,7 +7,9 @@ import { z } from 'zod';
 export const env = createEnv({
   extends: [auth(), db(), email(), redis()],
   server: {
-    NODE_ENV: z.enum(['development', 'production']).default('development'),
+    NODE_ENV: z
+      .enum(['development', 'production', 'test'])
+      .default('development'),
     PORT: z.coerce.number().default(1337),
     BUCKET_NAME: z.string(),
     BUCKET_REGION: z.string(),

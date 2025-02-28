@@ -5,7 +5,7 @@ export const keys = () =>
   createEnv({
     server: {
       DATABASE_URL: z.string().min(1).url(),
+      TEST_DATABASE_URL: z.string().min(1).url(),
     },
     experimental__runtimeEnv: process.env,
-    skipValidation: true,
   });

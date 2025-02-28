@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@tawasul/ui/components/dropdown-menu';
 import { Copy, Ellipsis, ExternalLink, Trash } from 'lucide-react';
+import { MouseEvent } from 'react';
 import { toast } from 'sonner';
 
 interface IPostMenu {
@@ -20,7 +21,9 @@ export function PostMenu({ post }: IPostMenu) {
   const { mutateAsync, isPending } = useDeletePost();
   const { data } = authClient.useSession();
 
-  async function onDelete() {
+  async function onDelete(event:MouseEvent<HTMLDivElement>) {
+
+    event.stopPropagation()
     toast.promise(mutateAsync({ postId: post.id }), {
       loading: 'Loading...',
       success: (_data) => {
@@ -72,7 +75,7 @@ export function PostMenu({ post }: IPostMenu) {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 disabled={isPending}
-                onClick={onDelete}
+                onClick={(onDelete)}
                 // className="flex cursor-pointer items-center justify-between text-destructive"
                 className={buttonVariants({
                   variant: 'destructive',

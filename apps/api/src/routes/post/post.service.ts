@@ -1,26 +1,14 @@
 import { STATUS } from '@/lib/constant';
 import { env } from '@/lib/env';
 import { HttpException } from '@/lib/exception';
-import { postDetailsKeyById } from '@/lib/kv';
 import { deleteFile, uploadFile } from '@/lib/s3';
-import type { Prisma } from '@prisma/client';
 import { db } from '@tawasul/db';
-import { redis } from '@tawasul/redis';
 import type { CreatePost, PostParamsInput } from './post.validation';
 
-export function postsWithMediaUrls(
-  posts: Prisma.PostGetPayload<{ include: { user: true; media: true } }>[]
-) {
-  return posts.map((p) => {
-    if (p.media && p.media.length > 0) {
-      p.media.map((m) => {
-        m.url = `${env.CLOUD_FRONT_URL}/${m.name}`;
-      });
-    }
+type InputOptions = {
+  userId: string;
+};
 
-    return p;
-  });
-}
 export async function findManyPosts({
   skip,
   take,
@@ -30,7 +18,29 @@ export async function findManyPosts({
     include: {
       user: true,
       media: true,
-      comment: true,
+      like: {
+        select: {
+          userId: true,
+        },
+      },
+      bookmark: {
+        select: {
+          userId: true,
+        },
+      },
+      repost: {
+        select: {
+          userId: true,
+        },
+      },
+      _count: {
+        select: {
+          comment: true,
+          like: true,
+          bookmark: true,
+          repost: true,
+        },
+      },
     },
     where: {
       ...(userId ? { userId } : {}),
@@ -42,13 +52,12 @@ export async function findManyPosts({
     skip: skip,
   });
 
-  const postsWithMedia = postsWithMediaUrls(posts);
-
-  return postsWithMedia;
-}
-
-export function getPostsModel() {
-  return db.post;
+  return posts.map((post) => ({
+    ...post,
+    like: post.like.map((like) => like.userId),
+    bookmark: post.bookmark.map((bookmark) => bookmark.userId),
+    repost: post.repost.map((repost) => repost.userId),
+  }));
 }
 
 export async function getPostsCount() {
@@ -68,6 +77,18 @@ export async function createPost({
     include: {
       user: true,
       media: true,
+      comment: true,
+      like: true,
+      bookmark: true,
+      repost: true,
+      _count: {
+        select: {
+          comment: true,
+          like: true,
+          bookmark: true,
+          repost: true,
+        },
+      },
     },
   });
 
@@ -86,7 +107,7 @@ export async function createPost({
           postId: newPost.id,
           name: newMedia.key,
           type: 'IMAGE',
-          url: '',
+          url: `${env.CLOUD_FRONT_URL}/${newMedia.key}`,
         },
       });
     })
@@ -97,31 +118,64 @@ export async function createPost({
     include: {
       user: true,
       media: true,
+      comment: true,
+      like: true,
+      bookmark: true,
+      repost: true,
+      _count: {
+        select: {
+          comment: true,
+          like: true,
+          bookmark: true,
+          repost: true,
+        },
+      },
     },
   });
-
-  if (post?.media && post.media.length > 0) {
-    for (const media of post.media) {
-      media.url = `${env.CLOUD_FRONT_URL}/${media.name}`;
-    }
-  }
 
   return post;
 }
 
 export async function findPostById(input: PostParamsInput['params']) {
-  const cachedValue = await redis.get(postDetailsKeyById(input.id));
-  if (cachedValue) {
-    return cachedValue;
-  }
-
   const post = await db.post.findFirst({
     where: {
       id: input.id,
     },
+
     include: {
       media: true,
       user: true,
+      comment: {
+        include: {
+          user: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      },
+      like: {
+        select: {
+          userId: true,
+        },
+      },
+      bookmark: {
+        select: {
+          userId: true,
+        },
+      },
+      repost: {
+        select: {
+          userId: true,
+        },
+      },
+      _count: {
+        select: {
+          comment: true,
+          like: true,
+          bookmark: true,
+          repost: true,
+        },
+      },
     },
   });
 
@@ -132,19 +186,16 @@ export async function findPostById(input: PostParamsInput['params']) {
     });
   }
 
-  if (post.media && post?.media.length > 0) {
-    for (const media of post.media) {
-      media.url = `${env.CLOUD_FRONT_URL}/${media.name}`;
-    }
-  }
-
-  await redis.set(postDetailsKeyById(input.id), JSON.stringify(post));
-
-  return post;
+  return {
+    ...post,
+    like: post.like.map((like) => like.userId),
+    bookmark: post.bookmark.map((bookmark) => bookmark.userId),
+    repost: post.repost.map((repost) => repost.userId),
+  };
 }
 
 export async function deletePost(
-  input: PostParamsInput['params'] & { userId: string }
+  input: PostParamsInput['params'] & InputOptions
 ) {
   const post = await db.post.findFirst({
     where: {
@@ -173,11 +224,132 @@ export async function deletePost(
     await Promise.all(post.media.map((m) => deleteFile(m.name)));
   }
 
-  await redis.del(postDetailsKeyById(post.id));
-
   return await db.post.delete({
     where: {
       id: input.id,
     },
   });
+}
+
+export async function likePost(
+  input: PostParamsInput['params'] & InputOptions
+) {
+  const post = await db.post.findFirst({
+    where: {
+      id: input.id,
+    },
+  });
+
+  if (!post) {
+    throw new HttpException({
+      message: 'Post not found',
+      statusCode: STATUS.NOT_FOUND,
+    });
+  }
+
+  const isLiked = await db.like.findFirst({
+    where: {
+      postId: input.id,
+      userId: input.userId,
+    },
+  });
+
+  if (isLiked) {
+    return await db.like.delete({
+      where: {
+        id: isLiked.id,
+      },
+    });
+  }
+
+  return await db.like.create({
+    data: {
+      postId: post.id,
+      userId: input.userId,
+    },
+  });
+}
+
+export async function repost(input: PostParamsInput['params'] & InputOptions) {
+  const post = await db.post.findFirst({
+    where: {
+      id: input.id,
+    },
+  });
+
+  if (!post) {
+    throw new HttpException({
+      message: 'Post not found',
+      statusCode: STATUS.NOT_FOUND,
+    });
+  }
+
+  const isReposted = await db.repost.findFirst({
+    where: {
+      postId: input.id,
+      userId: input.userId,
+    },
+  });
+
+  if (isReposted) {
+    return await db.repost.delete({
+      where: {
+        id: isReposted.id,
+      },
+    });
+  }
+
+  return await db.repost.create({
+    data: {
+      postId: post.id,
+      userId: input.userId,
+    },
+  });
+}
+
+export async function bookmark(
+  input: PostParamsInput['params'] & InputOptions
+) {
+  const post = await db.post.findFirst({
+    where: {
+      id: input.id,
+    },
+  });
+
+  if (!post) {
+    throw new HttpException({
+      message: 'Post not found',
+      statusCode: STATUS.NOT_FOUND,
+    });
+  }
+
+  const isReposted = await db.bookmark.findFirst({
+    where: {
+      postId: input.id,
+      userId: input.userId,
+    },
+  });
+
+  if (isReposted) {
+    return await db.bookmark.delete({
+      where: {
+        id: isReposted.id,
+      },
+    });
+  }
+
+  return await db.bookmark.create({
+    data: {
+      postId: post.id,
+      userId: input.userId,
+    },
+  });
+}
+
+export async function deleteManyPosts() {
+  return await db.post.deleteMany();
+}
+
+export async function clearDB() {
+  return Promise.all([await db.post.deleteMany(), await db.user.deleteMany()]);
 }

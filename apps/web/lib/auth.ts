@@ -11,5 +11,3 @@ export async function logOut() {
     headers: await headers(),
   });
 }
-
-export type Session = typeof auth.$Infer.Session;

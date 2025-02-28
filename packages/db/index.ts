@@ -6,7 +6,12 @@ import { keys } from './keys';
 
 neonConfig.webSocketConstructor = ws;
 
-const pool = new Pool({ connectionString: keys().DATABASE_URL });
+const pool = new Pool({
+  connectionString:
+    process.env.NODE_ENV === 'test'
+      ? keys().TEST_DATABASE_URL
+      : keys().DATABASE_URL,
+});
 const adapter = new PrismaNeon(pool);
 
 export const db = new PrismaClient({ adapter });

@@ -1,12 +1,18 @@
 import { STATUS } from '@/lib/constant';
-import { isValidNumber } from '@/lib/utils';
+import { HttpException } from '@/lib/exception';
+import { getPaginationMetadata, isValidNumber } from '@/lib/utils';
+import type { TApiPaginationResponse } from '@tawasul/types';
 import type { Request, Response } from 'express';
 import {
+  bookmark,
   createPost,
+  deleteManyPosts,
   deletePost,
   findManyPosts,
   findPostById,
   getPostsCount,
+  likePost,
+  repost,
 } from './post.service';
 import type {
   CreatePost,
@@ -35,23 +41,12 @@ export const findPostsHandler = async (
   });
   const totalItems = await getPostsCount();
 
-  const totalPages = Math.ceil(totalItems / limit);
-
-  const result = {
+  const result: TApiPaginationResponse<typeof posts> = {
     data: posts,
-    totalItems,
-    totalPages,
-    currentPage: page,
-    pageSize: limit,
-    hasNext: page < totalPages,
-    hasPrevious: page > 1,
-    nextPage: page < totalPages ? page + 1 : null,
-    previousPage: page > 1 ? page - 1 : null,
+    ...getPaginationMetadata({ limit, page, totalItems }),
   };
 
-  res.status(STATUS.OK).json({
-    ...result,
-  });
+  res.status(STATUS.OK).json(result);
 };
 
 export const createPostHandler = async (
@@ -92,4 +87,59 @@ export const deletePostHandler = async (
     userId: req.user.id,
   });
   res.status(STATUS.CREATED).json(deletedPost);
+};
+
+export const likePostHandler = async (
+  req: Request<PostParamsInput['params']>,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  const likedPost = await likePost({
+    id,
+    userId: req.user.id,
+  });
+
+  res.status(STATUS.CREATED).json(likedPost);
+};
+
+export const repostHandler = async (
+  req: Request<PostParamsInput['params']>,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  const likedPost = await repost({
+    id,
+    userId: req.user.id,
+  });
+
+  res.status(STATUS.CREATED).json(likedPost);
+};
+
+export const bookmarkHandler = async (
+  req: Request<PostParamsInput['params']>,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  const likedPost = await bookmark({
+    id,
+    userId: req.user.id,
+  });
+
+  res.status(STATUS.CREATED).json(likedPost);
+};
+
+export const deleteManyPostsHandler = async (req: Request, res: Response) => {
+  if (req.user.email !== 'm.alaolaqi1417@gmail.com') {
+    throw new HttpException({
+      message: 'Unauthorized',
+      statusCode: STATUS.UNAUTHORIZED,
+    });
+  }
+
+  await deleteManyPosts();
+
+  res.status(STATUS.CREATED).json({ message: 'All Posts deleted' });
 };

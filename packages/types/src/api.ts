@@ -1,4 +1,4 @@
-export type TApiResponse<T> = {
+export type TApiPaginationResponse<T> = {
   data: T;
   totalItems: number;
   totalPages: number;

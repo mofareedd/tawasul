@@ -1,8 +1,11 @@
 import authMiddleware from '@/middleware/auth.middleware';
 import { schemaValidator } from '@/middleware/validator';
 import { Router } from 'express';
-import { createCommentHandler } from './comment.controller';
-import { createCommentSchema } from './comment.validation';
+import {
+  createCommentHandler,
+  deleteCommentHandler,
+} from './comment.controller';
+import { commentParamsSchema, createCommentSchema } from './comment.validation';
 
 const commentRoute = Router();
 
@@ -12,6 +15,14 @@ commentRoute
     authMiddleware,
     schemaValidator(createCommentSchema),
     createCommentHandler
+  );
+
+commentRoute
+  .route('/:id')
+  .delete(
+    authMiddleware,
+    schemaValidator(commentParamsSchema),
+    deleteCommentHandler
   );
 
 export { commentRoute };

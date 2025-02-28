@@ -1,7 +1,7 @@
 import { STATUS } from '@/lib/constant';
 import { HttpException } from '@/lib/exception';
 import { db } from '@tawasul/db';
-import type { CreateComment } from './comment.validation';
+import type { CommentParamsInput, CreateComment } from './comment.validation';
 
 export async function createComment(
   input: CreateComment['body'] & { userId: string }
@@ -24,6 +24,36 @@ export async function createComment(
       content: input.content,
       postId: input.postId,
       userId: input.userId,
+    },
+  });
+}
+
+export async function deleteComment(
+  input: CommentParamsInput['params'] & { userId: string }
+) {
+  const isCommentExisted = await db.comment.findFirst({
+    where: {
+      id: input.id,
+    },
+  });
+
+  if (!isCommentExisted) {
+    throw new HttpException({
+      message: 'Comment not found',
+      statusCode: STATUS.NOT_FOUND,
+    });
+  }
+
+  if (isCommentExisted.userId !== input.userId) {
+    throw new HttpException({
+      message: 'Unauthorized',
+      statusCode: STATUS.UNAUTHORIZED,
+    });
+  }
+
+  return await db.comment.delete({
+    where: {
+      id: input.id,
     },
   });
 }

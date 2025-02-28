@@ -109,7 +109,7 @@ export function CreatePost() {
                           minHeight={40}
                           placeholder="Share Something"
                           disabled={isPending}
-                          className="resize-none border-0 focus-visible:ring-0 dark:border-muted-foreground dark:bg-accent/40"
+                          className="resize-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 ring-offset-0 ring-0 bg-card"
                         />
                       </FormControl>
                     </FormItem>

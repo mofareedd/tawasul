@@ -17,6 +17,7 @@ import {
   PopoverTrigger,
 } from '@tawasul/ui/components/popover';
 import { type ZComments, zComments } from '@tawasul/validation';
+import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -29,7 +30,7 @@ interface ICommentForm {
 export function CommentForm({ post }: ICommentForm) {
   const { mutateAsync, isPending } = useCreateComment({ postId: post.id });
   const textareaRef = useRef<HTMLInputElement | null>(null);
-
+  const router = useRouter();
   const form = useForm<ZComments>({
     resolver: zodResolver(zComments),
     defaultValues: {
@@ -67,6 +68,7 @@ export function CommentForm({ post }: ICommentForm) {
       loading: 'Loading...',
       success: (_data) => {
         form.reset();
+        router.refresh();
         return 'Comment has been created';
       },
       error: 'Error',

@@ -1,7 +1,6 @@
 'use client';
 import { CalendarIcon } from 'lucide-react';
 
-import type { Session } from '@/lib/auth';
 import {
   Avatar,
   AvatarFallback,
@@ -15,6 +14,7 @@ import {
 } from '@tawasul/ui/components/hover-card';
 import { format } from 'date-fns';
 import { UserAvatar } from '../user/user-avatar';
+import { Session } from '@/lib/types';
 
 interface IUserHoverCard {
   user: Session['user'];

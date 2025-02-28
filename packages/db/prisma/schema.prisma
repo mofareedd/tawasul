@@ -7,9 +7,8 @@ generator client {
 }
 
 datasource db {
-  provider     = "postgresql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -23,12 +22,17 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
-  Post          Post[]
+  post          Post[]
 
-  bio      String?
-  birthday DateTime?
-  country  String?
-  Comment  Comment[]
+  bio       String?
+  birthday  DateTime?
+  country   String?
+  comment   Comment[]
+  like      Like[]
+  bookmark  Bookmark[]
+  repost    Repost[]
+  group     Group[]
+  UserGroup UserGroup[]
 
   @@unique([email])
   @@map("user")
@@ -46,7 +50,6 @@ model Session {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
-  @@index([userId])
   @@map("session")
 }
 
@@ -66,7 +69,6 @@ model Account {
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 
-  @@index([userId])
   @@map("account")
 }
 
@@ -82,16 +84,24 @@ model Verification {
 }
 
 model Post {
-  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  // id        String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String   @id @default(uuid())
   content   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  media     Media[]
-  comment   Comment[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@index([userId])
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  groupId String?
+  group   Group?  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  media    Media[]
+  comment  Comment[]
+  like     Like[]
+  bookmark Bookmark[]
+  repost   Repost[]
+
   @@map("posts")
 }
 
@@ -101,7 +111,7 @@ enum MediaType {
 }
 
 model Media {
-  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String    @id @default(uuid())
   url       String
   name      String
   type      MediaType
@@ -110,28 +120,85 @@ model Media {
   postId String?
   post   Post?   @relation(fields: [postId], references: [id], onDelete: Cascade)
 
-  @@index([postId])
   @@map("media")
 }
 
 model Comment {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String   @id @default(uuid())
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  postId String?
-  post   Post?   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 
-  @@index([postId])
-  @@index([userId])
   @@map("comment")
 }
 
-model Group {
-  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+model Like {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@map("like")
+}
+
+model Repost {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@map("repost")
+}
+
+model Bookmark {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@map("bookmark")
+}
+
+model Group {
+  id          String      @id @default(uuid())
+  name        String
+  description String
+  img         String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  userId      String
+  createdBy   User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userGroup   UserGroup[]
+  post        Post[]
+
+  @@unique([name])
   @@map("group")
+}
+
+model UserGroup {
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  groupId   String
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([groupId, userId])
+  @@map("user_group")
 }

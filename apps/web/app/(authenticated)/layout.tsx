@@ -18,7 +18,7 @@ export default async function AppLayout({
 
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar currentUser={session.user} />
       <SidebarInset>
         <SiteHeader />
         <div className="flex">

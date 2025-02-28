@@ -22,6 +22,7 @@ export const Icons = {
   more: Ellipsis,
   smile: Smile,
   send: SendHorizonal,
+
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

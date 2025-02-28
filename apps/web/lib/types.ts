@@ -3,6 +3,9 @@ import type { authClient } from '@tawasul/auth/client';
 
 export type Session = typeof authClient.$Infer.Session;
 
+export type CurrentUserProps = {
+  currentUser: Session['user'];
+};
 export interface NavItem {
   title: string;
   url: string;
@@ -12,4 +15,9 @@ export interface NavItem {
   label?: string;
   description?: string;
   isActive?: boolean;
+}
+
+export interface LikeState {
+  likeCount: number;
+  isLiked: boolean;
 }
